@@ -1,0 +1,14 @@
+.calendaritems_container{
+    display: grid;
+    width: 300px;
+    grid-template-columns: repeat(7, 1fr);
+}
+
+.calendar_option{
+    display: flex;
+    height: 20px;
+}
+
+.calendar{
+    width: 300px;
+}
