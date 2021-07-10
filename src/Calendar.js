@@ -6,13 +6,20 @@ import './Calendar.css'
 export const Calendar = ({onSelectChange}) => {
 
     const [displayMonth, setDisplayMonth] = useState(new Date())
+    const [date, setDate] = useState(()=>{
+        return {
+            date:new Date(), 
+            selected:false
+        }
+    })
     const [dates, setDates] = useState(() => {
         let dds = []
-        dds[0] = new Date();
-        dds[34] = new Date();
-        dds.fill(new Date())
+        dds[0] = {date:new Date(), selected:false}
+        dds[34] = {date:new Date(), selected:false}
+        dds.fill({date:new Date(), selected:false})
         return dds
     })
+
 
     const SetMonth = useCallback((date) => {
         console.log(`SetMonth: ${date}`)
@@ -21,7 +28,11 @@ export const Calendar = ({onSelectChange}) => {
         cur_date.setDate(-first_day)
         let dds = []
         for (let i = 0; i < 35; i++) {
-            dds.push(new Date(cur_date.getFullYear(), cur_date.getMonth(), cur_date.getDate()))
+            let dd = {
+                date:new Date(cur_date.getFullYear(), cur_date.getMonth(), cur_date.getDate()), 
+                selected:false
+            }
+            dds.push(dd)
             cur_date.setDate(cur_date.getDate() + 1)
         }
         setDates(prev => {
@@ -60,10 +71,14 @@ export const Calendar = ({onSelectChange}) => {
         })
     }
 
-    function selectDate(x) {
-        console.log(`selectDate ${x}`)
+    const selectDate = (x,index)=> {
+        console.log(`selectDate ${x} index:${index}`)
         onSelectChange(x)
+        let cur_date = new Date(displayMonth.getFullYear(), displayMonth.getMonth(), 1)
+        let dds = [...dates]
         
+        dds[index].selected=true
+        setDates(dds)
     }
 
     return (
@@ -84,8 +99,10 @@ export const Calendar = ({onSelectChange}) => {
                 {
                     dates.map((item, index) => {
                         return (
-                             <div style={{justifySelf:"center"}} onClick={()=>{selectDate(item)}} key={index}>{item.getDate()}</div>
-                            //<CalendarItem currentDate={item} key={index}></CalendarItem>
+                             <div className={`calendar_item ${item.selected?'calendar_item_active':''}`} onClick={()=>{selectDate(item, index)}} key={index}>
+                                 <div>{item.date.getDate()}</div>
+                             </div>
+                            // <CalendarItem click={()=>{selectDate(item)}} currentDate={item} key={index}></CalendarItem>
                         )
                     })
                 }
@@ -95,9 +112,9 @@ export const Calendar = ({onSelectChange}) => {
     );
 }
 
-const CalendarItem=({currentDate})=>{
+const CalendarItem=({currentDate, click, selected})=>{
     return(
-        <div style={{justifySelf:"center"}}>
+        <div style={{justifySelf:"center", color:selected?"green":"black"}} onClick={(click)}>
             {currentDate.getDate()}
         </div>
     )
