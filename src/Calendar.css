@@ -5,10 +5,12 @@
 }
 
 .calendar_option{
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     height: 20px;
 }
 
 .calendar{
     width: 300px;
+    border: 1px solid red;
 }
