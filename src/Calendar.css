@@ -18,20 +18,38 @@
     height: 44px;
     width: 44px;
     border: 3px solid transparent;
+    margin: 1px;
 }
 
-.calendar_item_active{
+.calendar_item_selected{
     border: 3px solid #0078D7;
 }
 
-.calendar_item:hover{
+.calendar_item_hover{
     border: 3px solid #f2f2f2;
+}
+
+.calendar_item_hover_selected{
+    border: 3px solid #59a1da;
+}
+
+.calendar_item_tody{
+    background: #0078D7;
 }
 
 
 
+.time_today{
+    color:#004275;
+    cursor: pointer;
+}
+
+.time_today:hover{
+    color: #8f8f8f;
+}
+
 .calendar{
-    width: 350px;
+    width: 364px;
     border: 1px solid red;
     background: #D2D2D2;
 }
