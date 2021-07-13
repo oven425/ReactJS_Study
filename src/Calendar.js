@@ -1,62 +1,69 @@
 /* eslint-disable no-unused-vars */
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import PropTypes from 'prop-types';
 import './Calendar.css'
 
 export const Calendar = ({ onSelectChange }) => {
     const [now, setNow] = useState(new Date())
     const [displayMonth, setDisplayMonth] = useState(new Date())
-    const [dates, setDates] = useState(() => {
-        let dds = []
-        dds[0] = { date: new Date(), selected: false, isMouseOver: false, isToday:false }
-        dds[34] = { date: new Date(), selected: false, isMouseOver: false, isToday:false }
-        dds.fill({ date: new Date(), selected: false, isMouseOver: false, isToday:false })
-        return dds
-    })
+    // const [dates, setDates] = useState(() => {
+    //     let dds = []
+    //     dds[0] = { date: new Date(), selected: false, isMouseOver: false, isToday:false }
+    //     dds[34] = { date: new Date(), selected: false, isMouseOver: false, isToday:false }
+    //     dds.fill({ date: new Date(), selected: false, isMouseOver: false, isToday:false })
+    //     return dds
+    // })
 
 
-    // const SetMonth = useCallback((date) => {
-    //     console.log(`SetMonth: ${date}`)
+    // const SetMonth = useCallback(() => {
+    //     console.log(`SetMonth useCallback`)
+    //     SetMonth1(displayMonth)
+    // }, [displayMonth])
+
+    // const SetMonth1 = (date) => {
+    //     console.log(`SetMonth1: ${date}`)
+    //     let now = new Date()
     //     let cur_date = new Date(date.getFullYear(), date.getMonth(), 1)
     //     let first_day = cur_date.getDay()
-    //     cur_date.setDate(-first_day)
+    //     cur_date.setDate(-(first_day-1))
     //     let dds = []
     //     for (let i = 0; i < 35; i++) {
     //         let dd = {
     //             date: new Date(cur_date.getFullYear(), cur_date.getMonth(), cur_date.getDate()),
     //             selected: false,
     //             isMouseOver: false,
-    //             isToday:false
+    //             isToday:cur_date.getFullYear()===now.getFullYear()&&cur_date.getMonth()===now.getMonth()&&cur_date.getDate()===now.getDate()
     //         }
     //         dds.push(dd)
     //         cur_date.setDate(cur_date.getDate() + 1)
     //     }
     //     setDates(x => x=dds)
-    // }, [])
+    // }
 
-    const SetMonth = (date) => {
-        console.log(`SetMonth: ${date}`)
-        let cur_date = new Date(date.getFullYear(), date.getMonth(), 1)
+    // const effect_setMonth = useEffect(() => {
+    //     console.log('effect_setMonth')
+    //     SetMonth(displayMonth)
+    // }, [displayMonth])
+
+    const dates = useMemo(() => {
+        console.log(`SetMonth1: ${displayMonth}`)
+        let now = new Date()
+        let cur_date = new Date(displayMonth.getFullYear(), displayMonth.getMonth(), 1)
         let first_day = cur_date.getDay()
-        cur_date.setDate(-first_day)
+        cur_date.setDate(-(first_day - 1))
         let dds = []
         for (let i = 0; i < 35; i++) {
-            let dd = {
-                date: new Date(cur_date.getFullYear(), cur_date.getMonth(), cur_date.getDate()),
-                selected: false,
-                isMouseOver: false,
-                isToday:cur_date.getFullYear()===date.getFullYear()&&cur_date.getMonth()===date.getMonth()&&cur_date.getDate()===date.getDate()
-            }
-            dds.push(dd)
-            cur_date.setDate(cur_date.getDate() + 1)
+          let dd = {
+            date: new Date(cur_date.getFullYear(), cur_date.getMonth(), cur_date.getDate()),
+            selected: false,
+            isMouseOver: false,
+            isToday: cur_date.getFullYear() === now.getFullYear() && cur_date.getMonth() === now.getMonth() && cur_date.getDate() === now.getDate()
+          }
+          dds.push(dd)
+          cur_date.setDate(cur_date.getDate() + 1)
         }
-        setDates(x => x=dds)
-    }
-
-    const effect_setMonth = useEffect(() => {
-        console.log('effect_setMonth')
-        SetMonth(displayMonth)
-    }, [displayMonth])
+        return dds
+      }, [displayMonth])
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -87,37 +94,46 @@ export const Calendar = ({ onSelectChange }) => {
         console.log(`selectDate ${x} index:${index}`)
         onSelectChange(x)
         if(dates[index].selected===false){
-            let cur_date = new Date(displayMonth.getFullYear(), displayMonth.getMonth(), 1)
-            let dds = [...dates]
-            for (let i = 0; i < dds.length; i++) {
-                dds[i].selected = false
+            // let cur_date = new Date(displayMonth.getFullYear(), displayMonth.getMonth(), 1)
+            // let dds = [...dates]
+            // for (let i = 0; i < dds.length; i++) {
+            //     dds[i].selected = false
+            // }
+            // dds[index].selected = true
+            // if(dds[index].isMouseOver){
+            //     console.log(`isMouseOver index:${index}`)
+            // }
+            //setDates(dds)
+            for (let i = 0; i < dates.length; i++) {
+                dates[i].selected = false
             }
-            dds[index].selected = true
-            if(dds[index].isMouseOver){
-                console.log(`isMouseOver index:${index}`)
-            }
-            setDates(dds)
+            dates[index].selected = true
         }
         
     }
     const onMouseEnter = (x, index) => {
         if (dates[index].isMouseOver === false) {
             console.log(`onMouseEnter index:${index}`)
-            let dds = [...dates]
-            for (let i = 0; i < dds.length; i++) {
-                dds[i].isMouseOver = false
-            }
-            dds[index].isMouseOver = true
-            setDates(dds)
+            // let dds = [...dates]
+            // for (let i = 0; i < dds.length; i++) {
+            //     dds[i].isMouseOver = false
+            // }
+            // dds[index].isMouseOver = true
+            //setDates(dds)
+            // for (let i = 0; i < dates.length; i++) {
+            //     dates[i].isMouseOver = false
+            // }
+            dates[index].isMouseOver = true
         }
     }
 
     const onMouseLeave = (x, index) => {
         if (dates[index].isMouseOver === true) {
             console.log(`onMouseLeave index:${index}`)
-            let dds = [...dates]
-            dds[index].isMouseOver = false
-            setDates(dds)
+            // let dds = [...dates]
+            // dds[index].isMouseOver = false
+            //setDates(dds)
+            dates[index].isMouseOver = false
         }
     }
 
@@ -129,12 +145,12 @@ export const Calendar = ({ onSelectChange }) => {
         <div>
             <div>
                 <div style={{fontSize:"40px"}}>{`${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`}</div>
-                <div className="time_today" onClick={()=>{setDisplayMonth(x=>x= now)}}>{`${now.getFullYear()}/${now.getMonth()}/${now.getDate()}`}</div>
+                <div className="time_today" onClick={()=>{setDisplayMonth(x=>x= now)}}>{`${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()}`}</div>
             </div>
             <div className="calendar">
                 <div className="calendar_option">
                     <button style={{ justifySelf: "start" }} onClick={prevMonth}>&lt;</button>
-                    <div style={{ justifySelf: "center" }}>{displayMonth.getFullYear()}/{displayMonth.getMonth()}</div>
+                    <div style={{ justifySelf: "center" }}>{displayMonth.getFullYear()}/{displayMonth.getMonth()+1}</div>
                     <button style={{ justifySelf: "end" }} onClick={nextMonth} >&gt;</button>
                 </div>
                 <div className="calendaritems_container">
