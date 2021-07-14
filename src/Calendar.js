@@ -15,10 +15,26 @@ export const Calendar = ({ onSelectChange }) => {
     // })
 
 
-    // const SetMonth = useCallback(() => {
-    //     console.log(`SetMonth useCallback`)
-    //     SetMonth1(displayMonth)
-    // }, [displayMonth])
+    const dates = useCallback(() => {
+        console.log(`SetMonth useCallback ${displayMonth}`)
+        console.log(`SetMonth1: ${displayMonth}`)
+        let now = new Date()
+        let cur_date = new Date(displayMonth.getFullYear(), displayMonth.getMonth(), 1)
+        let first_day = cur_date.getDay()
+        cur_date.setDate(-(first_day-1))
+        let dds = []
+        for (let i = 0; i < 35; i++) {
+            let dd = {
+                date: new Date(cur_date.getFullYear(), cur_date.getMonth(), cur_date.getDate()),
+                selected: false,
+                isMouseOver: false,
+                isToday:cur_date.getFullYear()===now.getFullYear()&&cur_date.getMonth()===now.getMonth()&&cur_date.getDate()===now.getDate()
+            }
+            dds.push(dd)
+            cur_date.setDate(cur_date.getDate() + 1)
+        }
+        return dds
+    }, [displayMonth])
 
     // const SetMonth1 = (date) => {
     //     console.log(`SetMonth1: ${date}`)
@@ -37,7 +53,8 @@ export const Calendar = ({ onSelectChange }) => {
     //         dds.push(dd)
     //         cur_date.setDate(cur_date.getDate() + 1)
     //     }
-    //     setDates(x => x=dds)
+    //     return dds
+    //     //setDates(x => x=dds)
     // }
 
     // const effect_setMonth = useEffect(() => {
@@ -45,25 +62,25 @@ export const Calendar = ({ onSelectChange }) => {
     //     SetMonth(displayMonth)
     // }, [displayMonth])
 
-    const dates = useMemo(() => {
-        console.log(`SetMonth1: ${displayMonth}`)
-        let now = new Date()
-        let cur_date = new Date(displayMonth.getFullYear(), displayMonth.getMonth(), 1)
-        let first_day = cur_date.getDay()
-        cur_date.setDate(-(first_day - 1))
-        let dds = []
-        for (let i = 0; i < 35; i++) {
-          let dd = {
-            date: new Date(cur_date.getFullYear(), cur_date.getMonth(), cur_date.getDate()),
-            selected: false,
-            isMouseOver: false,
-            isToday: cur_date.getFullYear() === now.getFullYear() && cur_date.getMonth() === now.getMonth() && cur_date.getDate() === now.getDate()
-          }
-          dds.push(dd)
-          cur_date.setDate(cur_date.getDate() + 1)
-        }
-        return dds
-      }, [displayMonth])
+    // const dates = useMemo(() => {
+    //     console.log(`SetMonth1: ${displayMonth}`)
+    //     let now = new Date()
+    //     let cur_date = new Date(displayMonth.getFullYear(), displayMonth.getMonth(), 1)
+    //     let first_day = cur_date.getDay()
+    //     cur_date.setDate(-(first_day - 1))
+    //     let dds = []
+    //     for (let i = 0; i < 35; i++) {
+    //       let dd = {
+    //         date: new Date(cur_date.getFullYear(), cur_date.getMonth(), cur_date.getDate()),
+    //         selected: false,
+    //         isMouseOver: false,
+    //         isToday: cur_date.getFullYear() === now.getFullYear() && cur_date.getMonth() === now.getMonth() && cur_date.getDate() === now.getDate()
+    //       }
+    //       dds.push(dd)
+    //       cur_date.setDate(cur_date.getDate() + 1)
+    //     }
+    //     return dds
+    //   }, [displayMonth])
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -93,52 +110,81 @@ export const Calendar = ({ onSelectChange }) => {
     const selectDate = (x, index) => {
         console.log(`selectDate ${x} index:${index}`)
         onSelectChange(x)
-        if(dates[index].selected===false){
-            // let cur_date = new Date(displayMonth.getFullYear(), displayMonth.getMonth(), 1)
-            // let dds = [...dates]
-            // for (let i = 0; i < dds.length; i++) {
-            //     dds[i].selected = false
-            // }
-            // dds[index].selected = true
-            // if(dds[index].isMouseOver){
-            //     console.log(`isMouseOver index:${index}`)
-            // }
-            //setDates(dds)
-            for (let i = 0; i < dates.length; i++) {
-                dates[i].selected = false
-            }
-            dates[index].selected = true
-        }
+        // if(dates[index].selected===false){
+        //     // let cur_date = new Date(displayMonth.getFullYear(), displayMonth.getMonth(), 1)
+        //     // let dds = [...dates]
+        //     // for (let i = 0; i < dds.length; i++) {
+        //     //     dds[i].selected = false
+        //     // }
+        //     // dds[index].selected = true
+        //     // if(dds[index].isMouseOver){
+        //     //     console.log(`isMouseOver index:${index}`)
+        //     // }
+        //     //setDates(dds)
+        //     for (let i = 0; i < dates.length; i++) {
+        //         dates[i].selected = false
+        //     }
+        //     dates[index].selected = true
+        // }
+
+        // if(dates()[index].selected===false){
+        //     // let cur_date = new Date(displayMonth.getFullYear(), displayMonth.getMonth(), 1)
+        //     // let dds = [...dates]
+        //     // for (let i = 0; i < dds.length; i++) {
+        //     //     dds[i].selected = false
+        //     // }
+        //     // dds[index].selected = true
+        //     // if(dds[index].isMouseOver){
+        //     //     console.log(`isMouseOver index:${index}`)
+        //     // }
+        //     //setDates(dds)
+        //     for (let i = 0; i < dates().length; i++) {
+        //         dates()[i].selected = false
+        //     }
+        //     dates()[index].selected = true
+        // }
         
     }
     const onMouseEnter = (x, index) => {
-        if (dates[index].isMouseOver === false) {
-            console.log(`onMouseEnter index:${index}`)
-            // let dds = [...dates]
-            // for (let i = 0; i < dds.length; i++) {
-            //     dds[i].isMouseOver = false
-            // }
-            // dds[index].isMouseOver = true
-            //setDates(dds)
-            // for (let i = 0; i < dates.length; i++) {
-            //     dates[i].isMouseOver = false
-            // }
-            dates[index].isMouseOver = true
-        }
+        // if (dates[index].isMouseOver === false) {
+        //     console.log(`onMouseEnter index:${index}`)
+        //     let dds = [...dates]
+        //     for (let i = 0; i < dds.length; i++) {
+        //         dds[i].isMouseOver = false
+        //     }
+        //     dds[index].isMouseOver = true
+        //     setDates(dds)
+        //     for (let i = 0; i < dates.length; i++) {
+        //         dates[i].isMouseOver = false
+        //     }
+        // }
+
+        // if (dates[index].isMouseOver === false) {
+        //     dates[index].isMouseOver = true
+        // }
+
+        // if (dates()[index].isMouseOver === false) {
+        //     dates()[index].isMouseOver = true
+        // }
     }
 
     const onMouseLeave = (x, index) => {
-        if (dates[index].isMouseOver === true) {
-            console.log(`onMouseLeave index:${index}`)
-            // let dds = [...dates]
-            // dds[index].isMouseOver = false
-            //setDates(dds)
-            dates[index].isMouseOver = false
-        }
-    }
+        // if (dates[index].isMouseOver === true) {
+        //     console.log(`onMouseLeave index:${index}`)
+        //     let dds = [...dates]
+        //     dds[index].isMouseOver = false
+        //     setDates(dds)
+        // }
 
-    const today=()=>{
-        setDisplayMonth(x=>x= now)
+        // if (dates[index].isMouseOver === true) {
+        //     console.log(`onMouseLeave index:${index}`)
+        //     dates[index].isMouseOver = false
+        // }
+
+        if (dates()[index].isMouseOver === true) {
+            console.log(`onMouseLeave index:${index}`)
+            dates()[index].isMouseOver = false
+        }
     }
 
     return (
@@ -162,20 +208,24 @@ export const Calendar = ({ onSelectChange }) => {
                     <div style={{ justifySelf: "center" }}>五</div>
                     <div style={{ justifySelf: "center" }}>六</div>
                     {
-                        dates.map((item, index) => {
+                        dates().map((item, index) => {
                             return (
-                                <div className={`calendar_item ${item.isToday ? 'calendar_item_tody' : ''} 
-                                ${item.selected&&item.isMouseOver?'calendar_item_hover_selected':item.selected?'calendar_item_selected':item.isMouseOver ? 'calendar_item_hover' : ''}
-                                 `}
-                                    onClick={() => { selectDate(item, index) }}
-                                    onMouseEnter={() => { onMouseEnter(item, index) }}
-                                    onMouseLeave={() => { onMouseLeave(item, index) }}
-                                    key={index}>
-                                        <div>
-                                            <div style={{color:`${item.isToday ? 'white' : item.date.getMonth()===displayMonth.getMonth()?'black':'#A8A8A8'}`}}>{item.date.getDate()}</div>
-                                        </div>
-                                    
+                                <div>
+                                    <input type="checkbox"></input>
+                                    <span style={{color:`${item.isToday ? 'white' : item.date.getMonth()===displayMonth.getMonth()?'black':'#A8A8A8'}`}}>{item.date.getDate()}</span>
                                 </div>
+                                // <div className={`calendar_item ${item.isToday ? 'calendar_item_tody' : ''} 
+                                // ${item.selected&&item.isMouseOver?'calendar_item_hover_selected':item.selected?'calendar_item_selected':item.isMouseOver ? 'calendar_item_hover' : ''}
+                                //  `}
+                                //     onClick={() => { selectDate(item, index) }}
+                                //     onMouseEnter={() => { onMouseEnter(item, index) }}
+                                //     onMouseLeave={() => { onMouseLeave(item, index) }}
+                                //     key={index}>
+                                //         <div>
+                                //             <div style={{color:`${item.isToday ? 'white' : item.date.getMonth()===displayMonth.getMonth()?'black':'#A8A8A8'}`}}>{item.date.getDate()}</div>
+                                //         </div>
+                                    
+                                // </div>
                             )
                         })
                     }

@@ -11,7 +11,7 @@
     height: 20px;
 }
 
-.calendar_item{
+/* .calendar_item{
     display: flex;
     align-items: center;
     justify-content: center;
@@ -35,6 +35,10 @@
 
 .calendar_item_tody{
     background: #0078D7;
+} */
+
+input[type=checkbox] {
+    display: none;
 }
 
 
