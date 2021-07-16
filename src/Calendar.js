@@ -109,84 +109,9 @@ export const Calendar = ({ onSelectChange }) => {
 
     const selectDate = (x, index) => {
         console.log(`selectDate ${x} index:${index}`)
-        onSelectChange(x)
-        if(dates[index].selected===false){
-            // let cur_date = new Date(displayMonth.getFullYear(), displayMonth.getMonth(), 1)
-            // let dds = [...dates]
-            // for (let i = 0; i < dds.length; i++) {
-            //     dds[i].selected = false
-            // }
-            // dds[index].selected = true
-            // if(dds[index].isMouseOver){
-            //     console.log(`isMouseOver index:${index}`)
-            // }
-            //setDates(dds)
-
-            // for (let i = 0; i < dates.length; i++) {
-            //     dates[i].selected = false
-            // }
-            // dates[index].selected = true
-        }
-
-        // if(dates()[index].selected===false){
-        //     // let cur_date = new Date(displayMonth.getFullYear(), displayMonth.getMonth(), 1)
-        //     // let dds = [...dates]
-        //     // for (let i = 0; i < dds.length; i++) {
-        //     //     dds[i].selected = false
-        //     // }
-        //     // dds[index].selected = true
-        //     // if(dds[index].isMouseOver){
-        //     //     console.log(`isMouseOver index:${index}`)
-        //     // }
-        //     //setDates(dds)
-        //     for (let i = 0; i < dates().length; i++) {
-        //         dates()[i].selected = false
-        //     }
-        //     dates()[index].selected = true
-        // }
-        
-    }
-    const onMouseEnter = (x, index) => {
-        // if (dates[index].isMouseOver === false) {
-        //     console.log(`onMouseEnter index:${index}`)
-        //     let dds = [...dates]
-        //     for (let i = 0; i < dds.length; i++) {
-        //         dds[i].isMouseOver = false
-        //     }
-        //     dds[index].isMouseOver = true
-        //     setDates(dds)
-        //     for (let i = 0; i < dates.length; i++) {
-        //         dates[i].isMouseOver = false
-        //     }
-        // }
-
-        // if (dates[index].isMouseOver === false) {
-        //     dates[index].isMouseOver = true
-        // }
-
-        // if (dates()[index].isMouseOver === false) {
-        //     dates()[index].isMouseOver = true
-        // }
+        onSelectChange(x)      
     }
 
-    const onMouseLeave = (x, index) => {
-        // if (dates[index].isMouseOver === true) {
-        //     console.log(`onMouseLeave index:${index}`)
-        //     let dds = [...dates]
-        //     dds[index].isMouseOver = false
-        //     setDates(dds)
-        // }
-
-        // if (dates[index].isMouseOver === true) {
-        //     console.log(`onMouseLeave index:${index}`)
-        //     dates[index].isMouseOver = false
-        // }
-
-        // if (dates()[index].isMouseOver === true) {
-        //     console.log(`onMouseLeave index:${index}`)
-        //     dates()[index].isMouseOver = false
-        // }
-    }
 
     return (
         <div>
