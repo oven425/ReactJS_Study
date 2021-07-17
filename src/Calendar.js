@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-vars */
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo,useImperativeHandle,forwardRef  } from "react";
 import PropTypes from 'prop-types';
 import './Calendar.css'
 
-export const Calendar = ({ onSelectChange }) => {
+export const Calendar = forwardRef(({onSelectChange }, ref ) => {
     const [now, setNow] = useState(new Date())
     const [displayMonth, setDisplayMonth] = useState(new Date())
     // const [dates, setDates] = useState(() => {
@@ -112,6 +112,17 @@ export const Calendar = ({ onSelectChange }) => {
         onSelectChange(x)      
     }
 
+    useImperativeHandle(ref, () => ({
+        
+        nextMonth() {
+            nextMonth()
+        },
+        prevMonth1() {
+            prevMonth()
+        }
+    
+      }));
+
 
     return (
         <div>
@@ -168,7 +179,7 @@ export const Calendar = ({ onSelectChange }) => {
         </div>
 
     );
-}
+})
 
 const CalendarItem = ({ currentDate, click, selected }) => {
     return (
