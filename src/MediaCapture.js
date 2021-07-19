@@ -3,41 +3,56 @@ import { useState, useEffect, useRef } from "react"
 //https://w3c.github.io/mediacapture-image/#mediatracksupportedconstraints-section
 export const MediaCapture = () => {
     const webcam = useRef()
-    useEffect(()=>{
+    // useEffect(()=>{
+    //     const stream = await navigator.mediaDevices.getUserMedia({
+    //         video: {pan: true, tilt: true, zoom: true},
+    //       });
+    // },[])
+
+    useEffect(() => {
+        console.log("useEffect open--")
+        open()
+        console.log("useEffect open 1")
+        return(()=>{
+            console.log("useEffect open----")
+        })
+    }, []);
+
+    let imageCapture;
+    async function open() {
+        console.log("open--")
         const stream = await navigator.mediaDevices.getUserMedia({
-            video: {pan: true, tilt: true, zoom: true},
-          });
-    },[])
-    // useEffect(() => {
-    //     if (navigator.mediaDevices.getUserMedia) {
-    //         // navigator.mediaDevices.enumerateDevices()
-    //         //     .then(function (devices) {
-    //         //         devices.forEach(function (device) {
-    //         //             console.log(device.kind + ": " + device.label +
-    //         //                 " id = " + device.deviceId);
-    //         //         });
-    //         //     })
-    //         //     .catch(function (err) {
-    //         //         console.log(err.name + ": " + err.message);
-    //         //     });
+            video: { pan: true, tilt: true, zoom: true },
+        });
+        webcam.current.srcObject = stream;
 
-    //             // let supportedConstraints = navigator.mediaDevices.getSupportedConstraints();
+        const [track] = stream.getVideoTracks();
+        console.log(track)
+        //imageCapture = new ImageCapture(track);
+        const capabilities = track.getCapabilities();
+        const settings = track.getSettings();
+        console.log("capabilities")
+        console.log(capabilities)
+        console.log("settings")
+        console.log(settings)
+      //imageCapture = new ImageCapture(track);
 
-    //             // for (let constraint in supportedConstraints) {
-    //             //   if (supportedConstraints.hasOwnProperty(constraint)) {
-    //             //     console.log(constraint)
-    //             //   }
-    //             // }
+        console.log("open----")
+    }
 
-    //         // navigator.mediaDevices.getUserMedia({ video: true })
-    //         //     .then(function (stream) {
-    //         //         webcam.current.srcObject = stream;
-    //         //     })
-    //         //     .catch(function (err0r) {
-    //         //         console.log("Something went wrong!");
-    //         //     });
-    //     }
-    // }, [])
+    async function takePhoto() {
+        try {
+          const blob = await imageCapture.takePhoto();
+          console.log("Photo taken: " + blob.type + ", " + blob.size + "B");
+    
+          //const image = document.querySelector('img');
+          //image.src = URL.createObjectURL(blob);
+        } catch (err) {
+          console.error("takePhoto() failed: ", err);
+        }
+      }
+
+
     return (
         <div style={{
             margin: "0px auto",
@@ -50,6 +65,8 @@ export const MediaCapture = () => {
                 height: "375px",
                 background: "#666"
             }} autoPlay></video>
+            <label>WB</label>
+            <select></select>
         </div>
 
     )
