@@ -3,20 +3,21 @@ import { useState, useEffect, useRef } from "react"
 //https://w3c.github.io/mediacapture-image/#mediatracksupportedconstraints-section
 export const MediaCapture = () => {
     const webcam = useRef()
+    const snapshotImage = useRef()
     // useEffect(()=>{
     //     const stream = await navigator.mediaDevices.getUserMedia({
     //         video: {pan: true, tilt: true, zoom: true},
     //       });
     // },[])
 
-    useEffect(() => {
+    useEffect(async() => {
         console.log("useEffect open--")
-        open()
+        await open()
         console.log("useEffect open 1")
         return(()=>{
             console.log("useEffect open----")
         })
-    }, []);
+    });
 
     let imageCapture;
     async function open() {
@@ -28,7 +29,7 @@ export const MediaCapture = () => {
 
         const [track] = stream.getVideoTracks();
         console.log(track)
-        //imageCapture = new ImageCapture(track);
+        imageCapture = new ImageCapture(track);
         const capabilities = track.getCapabilities();
         const settings = track.getSettings();
         console.log("capabilities")
@@ -52,21 +53,44 @@ export const MediaCapture = () => {
         }
       }
 
+      async function snapShot(){
+        const blob = await imageCapture.takePhoto();
+        console.log("snapShot taken: " + blob.type + ", " + blob.size + "B");
+//           console.log(URL.createObjectURL(blob))
+// snapshotImage.current.src = URL.createObjectURL(blob);
+          
+      }
+
+      function startRecord(){
+          //MediaRecorder
+      }
+
+      function stopRecord(){
+
+      }
+
 
     return (
         <div style={{
-            margin: "0px auto",
             width: "500px",
-            height: "375px",
-            border: "10px #333 solid"
+            border: "1px #333 solid"
         }}>
             <video ref={webcam} id="video" style={{
                 width: "500px",
                 height: "375px",
                 background: "#666"
             }} autoPlay></video>
+            <button onClick={async()=>await snapShot()}>Snapshot</button>
+            <img ref={snapshotImage} alt="BigCo Inc. logo" style={{
+                width:"100px",
+                height:"200px",
+                border: "1px #333 solid"
+            }}></img>
+            {/* <input type="checkbox">Record</input> */}
             <label>WB</label>
-            <select></select>
+            <select>
+                <option></option>
+            </select>
         </div>
 
     )
