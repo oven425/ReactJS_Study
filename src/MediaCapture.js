@@ -10,14 +10,14 @@ export const MediaCapture = () => {
     //       });
     // },[])
 
-    useEffect(async() => {
-        console.log("useEffect open--")
-        await open()
-        console.log("useEffect open 1")
-        return(()=>{
-            console.log("useEffect open----")
-        })
-    });
+    // useEffect(async() => {
+    //     console.log("useEffect open--")
+    //     await open()
+    //     console.log("useEffect open 1")
+    //     return(()=>{
+    //         console.log("useEffect open----")
+    //     })
+    // });
 
     let imageCapture;
     async function open() {

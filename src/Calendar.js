@@ -1,7 +1,23 @@
 /* eslint-disable no-unused-vars */
+
 import { useState, useEffect, useCallback, useMemo,useImperativeHandle,forwardRef  } from "react";
 import PropTypes from 'prop-types';
 import './Calendar.css'
+import styled from 'styled-components'
+
+
+const Button = styled.button`
+  /* Adapt the colors based on primary prop */
+  background: ${props => props.primary ? "palevioletred" : "white"};
+  color: ${props => props.primary ? "white" : "palevioletred"};
+
+  font-size: 1em;
+  margin: 1em;
+  padding: 0.25em 1em;
+  border: 2px solid palevioletred;
+  border-radius: 3px;
+`;
+
 
 export const Calendar = forwardRef(({onSelectChange }, ref ) => {
     const [now, setNow] = useState(new Date())
@@ -146,11 +162,7 @@ export const Calendar = forwardRef(({onSelectChange }, ref ) => {
                     <div style={{ justifySelf: "center", userSelect:"none" }}>六</div>
                     {
                         dates.map((item, index) => {
-                            return (
-                                // <div style={{background:"red"}}>
-                                //     <div style={{display:"flex", justifyContent:"center"}}>{item.date.getDate()}</div>
-                                // </div>
-                                
+                            return (                             
                                 <label key={index} onClick={() => { selectDate(item, index) }}>
                                     <input type="radio" name="calendar_month"></input>
                                     <span style={{display:"flex", 
@@ -158,19 +170,6 @@ export const Calendar = forwardRef(({onSelectChange }, ref ) => {
                                     color:`${item.isToday ? 'white' : item.date.getMonth()===displayMonth.getMonth()?'black':'#A8A8A8'}`,
                                     background:`${item.isToday ? '#0078D7' : 'transparent'}`}}>{item.date.getDate()}</span>
                                 </label>
-
-                                // <div className={`calendar_item ${item.isToday ? 'calendar_item_tody' : ''} 
-                                // ${item.selected&&item.isMouseOver?'calendar_item_hover_selected':item.selected?'calendar_item_selected':item.isMouseOver ? 'calendar_item_hover' : ''}
-                                //  `}
-                                //     onClick={() => { selectDate(item, index) }}
-                                //     onMouseEnter={() => { onMouseEnter(item, index) }}
-                                //     onMouseLeave={() => { onMouseLeave(item, index) }}
-                                //     key={index}>
-                                //         <div>
-                                //             <div style={{color:`${item.isToday ? 'white' : item.date.getMonth()===displayMonth.getMonth()?'black':'#A8A8A8'}`}}>{item.date.getDate()}</div>
-                                //         </div>
-                                    
-                                // </div>
                             )
                         })
                     }
@@ -180,13 +179,5 @@ export const Calendar = forwardRef(({onSelectChange }, ref ) => {
 
     );
 })
-
-const CalendarItem = ({ currentDate, click, selected }) => {
-    return (
-        <div style={{ justifySelf: "center", color: selected ? "green" : "black" }} onClick={(click)}>
-            {currentDate.getDate()}
-        </div>
-    )
-}
 
 
