@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 
-<<<<<<< HEAD
 import { useState, useEffect, useCallback, useMemo, useImperativeHandle, forwardRef } from "react";
 import PropTypes from 'prop-types';
 import './Calendar.css'
@@ -27,26 +26,6 @@ const Test = styled.input.attrs({
     &:hover  &:checked  + ${TestItem}{
         border: 3px solid #59a1da;
     }
-=======
-import { useState, useEffect, useCallback, useMemo,useImperativeHandle,forwardRef  } from "react";
-import PropTypes from 'prop-types';
-import './Calendar.css'
-import styled from 'styled-components'
-
-
-const Button = styled.button`
-  /* Adapt the colors based on primary prop */
-  background: ${props => props.primary ? "palevioletred" : "white"};
-  color: ${props => props.primary ? "white" : "palevioletred"};
-
-  font-size: 1em;
-  margin: 1em;
-  padding: 0.25em 1em;
-  border: 2px solid palevioletred;
-  border-radius: 3px;
-`;
-
->>>>>>> e956d35cf40712a025a47604ef4c3adb8ab60bd2
 
     &:hover + ${TestItem}{
         border: 3px solid #f2f2f2;
@@ -180,11 +159,7 @@ export const Calendar = forwardRef(({ onSelectChange }, ref) => {
                     <div style={{ justifySelf: "center", userSelect: "none" }}>六</div>
                     {
                         dates.map((item, index) => {
-<<<<<<< HEAD
                             return (
-=======
-                            return (                             
->>>>>>> e956d35cf40712a025a47604ef4c3adb8ab60bd2
                                 <label key={index} onClick={() => { selectDate(item, index) }}>
                                     <input type="radio" name="calendar_month"></input>
                                     <span style={{
