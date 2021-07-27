@@ -10,11 +10,11 @@ export const MediaCapture = () => {
     //       });
     // },[])
 
-    useEffect(async() => {
+    useEffect(() => {
         console.log("useEffect open--")
-        await open()
+        open()
         console.log("useEffect open 1")
-        return(()=>{
+        return (() => {
             console.log("useEffect open----")
         })
     });
@@ -36,38 +36,46 @@ export const MediaCapture = () => {
         console.log(capabilities)
         console.log("settings")
         console.log(settings)
-      //imageCapture = new ImageCapture(track);
+        //imageCapture = new ImageCapture(track);
 
         console.log("open----")
     }
 
     async function takePhoto() {
         try {
-          const blob = await imageCapture.takePhoto();
-          console.log("Photo taken: " + blob.type + ", " + blob.size + "B");
-    
-          //const image = document.querySelector('img');
-          //image.src = URL.createObjectURL(blob);
-        } catch (err) {
-          console.error("takePhoto() failed: ", err);
-        }
-      }
+            const blob = await imageCapture.takePhoto();
+            console.log("Photo taken: " + blob.type + ", " + blob.size + "B");
 
-      async function snapShot(){
+            //const image = document.querySelector('img');
+            //image.src = URL.createObjectURL(blob);
+        } catch (err) {
+            console.error("takePhoto() failed: ", err);
+        }
+    }
+
+    async function snapShot() {
         const blob = await imageCapture.takePhoto();
         console.log("snapShot taken: " + blob.type + ", " + blob.size + "B");
-//           console.log(URL.createObjectURL(blob))
-// snapshotImage.current.src = URL.createObjectURL(blob);
-          
-      }
+        //           console.log(URL.createObjectURL(blob))
+        // snapshotImage.current.src = URL.createObjectURL(blob);
 
-      function startRecord(){
-          //MediaRecorder
-      }
+    }
 
-      function stopRecord(){
+    function startRecord() {
+        //MediaRecorder
+    }
 
-      }
+    function stopRecord() {
+
+    }
+
+    function photoMode(){
+        console.log("photoMode");
+    }
+
+    function recordMode(){
+        console.log("recordMode");
+    }
 
 
     return (
@@ -80,10 +88,18 @@ export const MediaCapture = () => {
                 height: "375px",
                 background: "#666"
             }} autoPlay></video>
-            <button onClick={async()=>await snapShot()}>Snapshot</button>
+            <label>
+                <input type="radio" value="aaa" name="gender" onClick={()=>photoMode()} />
+                <span>Photo</span>
+            </label>
+            <label>
+                <input type="radio" value="aaa" name="gender" onClick={()=>recordMode()} />
+                <span>Record</span>
+            </label>
+            <button onClick={async () => await snapShot()}>Snapshot</button>
             <img ref={snapshotImage} alt="BigCo Inc. logo" style={{
-                width:"100px",
-                height:"200px",
+                width: "100px",
+                height: "200px",
                 border: "1px #333 solid"
             }}></img>
             {/* <input type="checkbox">Record</input> */}
