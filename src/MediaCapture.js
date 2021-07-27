@@ -10,6 +10,7 @@ export const MediaCapture = () => {
     //       });
     // },[])
 
+<<<<<<< HEAD
     useEffect(() => {
         console.log("useEffect open--")
         open()
@@ -18,6 +19,16 @@ export const MediaCapture = () => {
             console.log("useEffect open----")
         })
     });
+=======
+    // useEffect(async() => {
+    //     console.log("useEffect open--")
+    //     await open()
+    //     console.log("useEffect open 1")
+    //     return(()=>{
+    //         console.log("useEffect open----")
+    //     })
+    // });
+>>>>>>> e956d35cf40712a025a47604ef4c3adb8ab60bd2
 
     let imageCapture;
     async function open() {
