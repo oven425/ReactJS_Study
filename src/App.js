@@ -23,7 +23,7 @@ function App() {
   
   return (
     <div>
-      {/* <MediaCapture></MediaCapture> */}
+      <MediaCapture></MediaCapture>
       <button onClick={nextMonth}>Test calendar method</button>
       <Calendar ref={calendar} onSelectChange={onSelectChange1}/>
     </div>

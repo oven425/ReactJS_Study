@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react"
 export const MediaCapture = () => {
     const webcam = useRef()
     const snapshotImage = useRef()
+    const canvas1 = useRef();
     // useEffect(()=>{
     //     const stream = await navigator.mediaDevices.getUserMedia({
     //         video: {pan: true, tilt: true, zoom: true},
@@ -12,7 +13,23 @@ export const MediaCapture = () => {
 
     useEffect(() => {
         console.log("useEffect open--")
-        open()
+        //open();
+        console.log(canvas1.getContext);
+        if (canvas1.getContext) { //判斷是否支援
+            var ctx = canvas1.getContext('2d');
+            //宣告ctx渲染方式
+          
+            ctx.fillStyle = "rgb(200,0,0)"; //正方形的填滿色彩
+  ctx.fillRect (10, 10, 130, 130); //繪製一個填滿色彩的正方形
+  ctx.clearRect(20, 20, 110, 110); //摟空一個正方形區域
+
+  ctx.strokeStyle = "rgb(0,200,0)"; //正方形線段的色彩
+  ctx.strokeRect(40, 40, 70, 70); //畫一個正方形線段
+          
+          }else {
+            alert('your browser not support canvas')
+            //如果不支援
+          };
         console.log("useEffect open 1")
         return (() => {
             console.log("useEffect open----")
@@ -88,6 +105,8 @@ export const MediaCapture = () => {
                 height: "375px",
                 background: "#666"
             }} autoPlay></video>
+            <canvas width="300" height="300" ref={canvas1}></canvas>
+            
             <label>
                 <input type="radio" value="aaa" name="gender" onClick={()=>photoMode()} />
                 <span>Photo</span>
