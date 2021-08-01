@@ -183,7 +183,6 @@ export const MediaCapture = () => {
                 <input type="range" id="colorTemperature" ref={colorTemperature_range} onChange={(e) => { setColorTemperature_range(e.target.value) }}></input>
             </div>
 
-
             {/* <label>
                 <input type="radio" value="aaa" name="gender" onClick={()=>photoMode()} />
                 <span>Photo</span>
