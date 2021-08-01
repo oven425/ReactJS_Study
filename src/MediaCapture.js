@@ -183,24 +183,7 @@ export const MediaCapture = () => {
                 <input type="range" id="colorTemperature" ref={colorTemperature_range} onChange={(e) => { setColorTemperature_range(e.target.value) }}></input>
             </div>
 
-            {/* <label>
-                <input type="radio" value="aaa" name="gender" onClick={()=>photoMode()} />
-                <span>Photo</span>
-            </label>
-            <label>
-                <input type="radio" value="aaa" name="gender" onClick={()=>recordMode()} />
-                <span>Record</span>
-            </label>
-            <button onClick={async () => await snapShot()}>Snapshot</button>
-            <img ref={snapshotImage} alt="BigCo Inc. logo" style={{
-                width: "100px",
-                height: "200px",
-                border: "1px #333 solid"
-            }}></img>
-            <label>WB</label>
-            <select>
-                <option></option>
-            </select> */}
+            
         </div>
 
     )
