@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <title>Webcam test</title>
+   <meta charset="UTF-8">
+</head>
+
+<body onload="init()">
+
+   <video id="video" width="320" height="240"></video>
+   <button onclick="snapShot()">Snapshot</button>
+</body>
+<script>
+   let webcams = [];
+   async function init() {
+      console.log("init");
+      let devices = await navigator.mediaDevices.enumerateDevices();
+      devices.forEach(function (device) {
+         // console.log(`kind:${device.kind} label:${device.label}`);
+         //console.log(device);
+         if (device.kind === "videoinput") {
+            webcams.push(device);
+         }
+      });
+      
+     
+      navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+      if (navigator.getUserMedia) {
+         //navigator.getUserMedia({ audio: true, video: { width: 640, height: 480,facingMode: { exact: "environment" } } },
+         navigator.getUserMedia({ audio: true, video: { width: 640, height: 480, deviceId: webcams[0].deviceId } },
+            function (stream) {
+               let track = stream.getVideoTracks()[0];
+               let cap = track.getCapabilities();
+               console.log(cap);
+               imageCapture = new ImageCapture(track);
+               var video = document.getElementById('video');
+               video.srcObject = stream;
+               video.onloadedmetadata = function (e) {
+                  video.play();
+               };
+            },
+            function (err) {
+               console.log("The following error occurred: " + err.name);
+            }
+         );
+      } else {
+         console.log("getUserMedia not supported");
+      }
+   }
+   let imageCapture;
+   
+   async function snapShot(){
+      console.log("snapShot");
+      try {
+            console.log(imageCapture);
+            const blob = await imageCapture.takePhoto();
+            console.log("Photo taken: " + blob.type + ", " + blob.size + "B");
+
+            //const image = document.querySelector('img');
+            //image.src = URL.createObjectURL(blob);
+        } catch (err) {
+            console.error("takePhoto() failed: ", err);
+        }
+   }
+</script>
+
+</html>
