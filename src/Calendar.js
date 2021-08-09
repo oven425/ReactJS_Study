@@ -63,10 +63,48 @@ const TT = styled.label`
     } 
 `;
 
+export const useCalendarMonth=(date)=>{
+
+    const[displayMonth, setdisplayMonth] = useState(date);
+    const dates = useMemo(() => {
+        console.log(`SetMonth1: ${displayMonth}`)
+        let now = new Date()
+        let cur_date = new Date(displayMonth.getFullYear(), displayMonth.getMonth(), 1)
+        let first_day = cur_date.getDay()
+        cur_date.setDate(-(first_day - 1))
+        let dds = []
+        for (let i = 0; i < 35; i++) {
+            let dd = {
+                date: new Date(cur_date.getFullYear(), cur_date.getMonth(), cur_date.getDate()),
+                selected: false,
+                isMouseOver: false,
+                isToday: cur_date.getFullYear() === now.getFullYear() && cur_date.getMonth() === now.getMonth() && cur_date.getDate() === now.getDate()
+            }
+            dds.push(dd)
+            cur_date.setDate(cur_date.getDate() + 1)
+        }
+        return dds
+    }, [displayMonth])
+
+    const nextMonth=()=>{
+        console.log("nextMonth");
+    }
+    const nextWeek=()=>{
+        console.log("nextWeek");
+    }
+    const prevMonth=()=>{
+        console.log("prevMonth");
+    }
+    const prevWeek=()=>{
+        console.log("prevWeek");
+    }
+    return [nextMonth, prevMonth, nextWeek, prevWeek];
+};
+
 export const Calendar = forwardRef(({ onSelectChange }, ref) => {
     const [now, setNow] = useState(new Date())
     const [displayMonth, setDisplayMonth] = useState(new Date())
-
+    const [nextMonth, prevMonth] = useCalendarMonth(new Date());
     const dates = useMemo(() => {
         console.log(`SetMonth1: ${displayMonth}`)
         let now = new Date()
@@ -98,19 +136,19 @@ export const Calendar = forwardRef(({ onSelectChange }, ref) => {
         });
     }, [])
 
-    const prevMonth = () => {
-        console.log('prevMonth')
-        setDisplayMonth(prev => {
-            return new Date(prev.getFullYear(), prev.getMonth() - 1, 1)
-        })
-    }
+    // const prevMonth = () => {
+    //     console.log('prevMonth')
+    //     setDisplayMonth(prev => {
+    //         return new Date(prev.getFullYear(), prev.getMonth() - 1, 1)
+    //     })
+    // }
 
-    const nextMonth = () => {
-        console.log('nextMonth')
-        setDisplayMonth(prev => {
-            return new Date(prev.getFullYear(), prev.getMonth() + 1, 1)
-        })
-    }
+    // const nextMonth = () => {
+    //     console.log('nextMonth')
+    //     setDisplayMonth(prev => {
+    //         return new Date(prev.getFullYear(), prev.getMonth() + 1, 1)
+    //     })
+    // }
 
     const selectDate = (x, index) => {
         console.log(`selectDate ${x} index:${index}`)
