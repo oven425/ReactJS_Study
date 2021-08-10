@@ -2,9 +2,15 @@ const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const { ipcMain,dialog,shell } = require('electron')
 
-ipcMain.on('port', (e, msg) => {
-  const [port] = e.ports
-  console.log(dialog.showOpenDialog(mainWindow, { properties: ['openFile', 'multiSelections'] }));
+ipcMain.on('shell', (e, msg) => {
+  console.log(e);
+  shell.openExternal(msg.message);
+})
+
+ipcMain.on('openfile', async(e, msg) => {
+  let data = await dialog.showOpenDialog(mainWindow, { properties: ['openFile', 'multiSelections'] });
+  //console.log(data);
+  e.returnValue= data;
   //shell.openExternal(msg.message);
   // dialog.showOpenDialogSync(mainWindow, {
   //   properties: ['openFile', 'openDirectory']
