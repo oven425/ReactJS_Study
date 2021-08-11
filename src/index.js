@@ -9,14 +9,12 @@ ipcMain.on('shell', (e, msg) => {
 
 ipcMain.on('openfile', async(e, msg) => {
   let data = await dialog.showOpenDialog(mainWindow, { properties: ['openFile', 'multiSelections'] });
-  //console.log(data);
   e.returnValue= data;
-  //shell.openExternal(msg.message);
-  // dialog.showOpenDialogSync(mainWindow, {
-  //   properties: ['openFile', 'openDirectory']
-  // })
-  //console.log(e);
-  //console.log(msg);
+})
+
+ipcMain.on('savefile', async(e, msg) => {
+  let data = await dialog.showSaveDialog(mainWindow, { properties: ['saveFile'] });
+  e.returnValue= data;
 })
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.

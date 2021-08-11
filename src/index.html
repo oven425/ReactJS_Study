@@ -38,11 +38,44 @@
    const { shell, ipcRenderer } = require('electron')
    const { port1, port2 } = new MessageChannel()
 
+   function deletefile() {
+      let result = ipcRenderer.sendSync('openfile', { message: 'open' });
+      console.log(result);
+      if (result.canceled === true) {
+         return;
+      }
+      result.filePaths.forEach(element => {
+         fs.unlink(element, function (err) {
+            if (err)
+               console.log(err);
+            else
+               console.log('已經刪除檔案!');
+         });
+      });
+
+   }
+
+   function savefile() {
+      let result = ipcRenderer.sendSync('savefile', { message: 'save' });
+      console.log(result);
+      if (result.canceled === true) {
+         return;
+      }
+      fs.writeFile(result.filePath, "12345qazwsx", function (err) {
+         if (err)
+            console.log(err);
+         else
+            console.log('Write operation complete.');
+      });
+   }
+
    function openfile() {
 
       let result = ipcRenderer.sendSync('openfile', { message: 'open' });
       console.log(result);
-
+      if (result.canceled === true) {
+         return;
+      }
       fs.readFile(result.filePaths[0], 'utf-8', function (err, data) {
          console.log(`err: ${err}`);
          console.log(`data: ${data}`);
