@@ -22,18 +22,18 @@ function App() {
     calendar.current.nextMonth()
   }
 
-  return (
-    <div>
-      {/* <MediaCapture></MediaCapture> */}
-      <button onClick={nextMonth}>Test calendar method</button>
-      <Calendar ref={calendar} onSelectChange={onSelectChange1}/>
-    </div>
-
-  );
-
   // return (
-  //   <ImageEdit></ImageEdit>
+  //   <div>
+  //     {/* <MediaCapture></MediaCapture> */}
+  //     <button onClick={nextMonth}>Test calendar method</button>
+  //     <Calendar ref={calendar} onSelectChange={onSelectChange1}/>
+  //   </div>
+
   // );
+
+  return (
+    <ImageEdit></ImageEdit>
+  );
 }
 
 

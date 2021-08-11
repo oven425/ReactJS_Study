@@ -21,7 +21,10 @@ export const ImageEdit = () => {
         ctx.restore(); //到此才輸出，才不會還沒整體操作完就放出，會造成畫面快速抖動
     };
 
-    
+    const canvas_Mousemove = (data)=>{
+        console.log(data);
+        //console.log(`x:${data.clientX} y:${data.clientY}`);
+    }
 
     return (
         <div className="box">
@@ -30,7 +33,7 @@ export const ImageEdit = () => {
             </div>
             <div className="row content">
                 <div style={{marginLeft:"5px", marginTop:"5px", backgroundColor:"red", width:"300px", height:"300px"}}>
-                    <canvas ref={canvas} width="300px" height="300px"></canvas>
+                    <canvas onMouseMove={(e)=>canvas_Mousemove(e)} ref={canvas} width="300px" height="300px"></canvas>
                 </div>
             </div>
             <div className="row footer">
