@@ -7,6 +7,11 @@ ipcMain.on('shell', (e, msg) => {
   shell.openExternal(msg.message);
 })
 
+ipcMain.on('openfolder', async(e, msg) => {
+  let data = await dialog.showOpenDialog(mainWindow, { properties: ['openDirectory', 'multiSelections'] });
+  e.returnValue= data;
+})
+
 ipcMain.on('openfile', async(e, msg) => {
   let data = await dialog.showOpenDialog(mainWindow, { properties: ['openFile', 'multiSelections'] });
   e.returnValue= data;
