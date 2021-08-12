@@ -22,8 +22,10 @@ export const ImageEdit = () => {
     };
 
     const canvas_Mousemove = (data)=>{
-        console.log(data);
-        //console.log(`x:${data.clientX} y:${data.clientY}`);
+        var rect = data.target.getBoundingClientRect();
+        console.log(rect);
+        
+        console.log(`x:${data.clientX-rect.x} y:${data.clientY-rect.y}`);
     }
 
     return (
@@ -32,8 +34,8 @@ export const ImageEdit = () => {
                 Riibon
             </div>
             <div className="row content">
-                <div style={{marginLeft:"5px", marginTop:"5px", backgroundColor:"red", width:"300px", height:"300px"}}>
-                    <canvas onMouseMove={(e)=>canvas_Mousemove(e)} ref={canvas} width="300px" height="300px"></canvas>
+                <div onMouseMove={(e)=>canvas_Mousemove(e)} style={{marginLeft:"0px", marginTop:"0px", backgroundColor:"red", width:"300px", height:"300px"}}>
+                    <canvas ref={canvas} width="300px" height="300px"></canvas>
                 </div>
             </div>
             <div className="row footer">
