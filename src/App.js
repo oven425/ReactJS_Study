@@ -6,6 +6,7 @@ import { MediaCapture } from './MediaCapture';
 import { useState, useMemo } from 'react';
 import { useRef } from 'react';
 import { ImageEdit } from './ImageEdit';
+import { Ribbon } from './Ribbon'
 
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
     console.log(date)
   }
 
-  const nextMonth = ()=>{
+  const nextMonth = () => {
     console.log("App nextMonth")
     console.log(calendar)
     calendar.current.nextMonth()
@@ -31,8 +32,18 @@ function App() {
 
   // );
 
+  const [text, setText] = useState("123");
+  const onchange1 = (e)=>{
+    setText(e.target.value);
+//console.log(e);
+  }
+
   return (
-    <ImageEdit></ImageEdit>
+    // <div>
+    //   <input value={text} type="text" onChange={(e)=>onchange1(e)}></input>
+    //   <Ribbon text={text}></Ribbon>
+    // </div>
+<ImageEdit></ImageEdit>
   );
 }
 
