@@ -26,13 +26,28 @@ export const ImageEdit = () => {
     };
 
 
-
-    const canvas_Mousemove = (data) => {
-        //var rect = data.target.getBoundingClientRect();
-        //console.log(rect);
-
-        //console.log(`x:${data.clientX-rect.x} y:${data.clientY-rect.y}`);
-        //console.log(data);
+    let isSelect_track = false;
+    let canvas_rect = { left: 0, top: 0, width: 0, height: 0 };
+    const [selectRect, setSelectRect] = useState({ left: 0, top: 0, right: 0, bottom: 0 });
+    const canvas_Mousedown = (data) => {
+        isSelect_track = true;
+        
+        canvas_rect.left = canvas.current.style.left;
+        canvas_rect.top = canvas.current.style.top;
+        canvas_rect.width = canvas.current.style.width;
+        canvas_rect.height = canvas.current.style.height;
+        let select_track = document.getElementById("select_track");
+        let paint = document.getElementById("paint");
+        let rect = paint.getBoundingClientRect();
+        let x = data.clientX - rect.x;
+        let y = data.clientY - rect.y;
+        setSelectRect({left: x, top: y, right: x, bottom: y});
+        // select_track.style.left = `${x}px`;
+        // select_track.style.top = `${y}px`;
+        // select_track.style.width = "0px";
+        // select_track.style.height = "0px";
+        console.log(`canvas_Mousedown x:${x} y:${y}`);
+        
     }
 
     let resizemode = "";
@@ -47,9 +62,21 @@ export const ImageEdit = () => {
     }
 
     const mousemove = (data) => {
-        //console.log(data.target);
         
-        if (edittrack === true ) {
+        if (isSelect_track === true) {
+            console.log(data.target);
+            let paint = document.getElementById("paint");
+            let rect = paint.getBoundingClientRect();
+            let x = data.clientX - rect.x;
+            let y = data.clientY - rect.y;
+            //setSelectRect({left: 0, top: 0, right: 100, bottom: 100});
+            // setSelectRect(prevState => {
+            //     // 也可以使用 Object.assign
+            //     return {...prevState, ...{right:x, bottom:y}};
+            //   });
+            console.log(`x:${x} y:${y}`);
+        }
+        else if (edittrack === true) {
             let paint = document.getElementById("paint");
             let rect = paint.getBoundingClientRect();
             let x = data.clientX - rect.x;
@@ -57,8 +84,7 @@ export const ImageEdit = () => {
             let tracker = document.getElementById("edit_track");
             tracker.style.left = `${x}px`;
             tracker.style.top = `${y}px`;
-            if(x <=1 || y<=1)
-            {
+            if (x <= 1 || y <= 1) {
                 console.log(rect);
                 console.log(`clientX:${data.clientX} clientY:${data.clientY}`);
                 console.log(`x:${x} y:${y}`);
@@ -128,17 +154,6 @@ export const ImageEdit = () => {
         // e.target.style.left = `${x}px`;
     }
 
-    // const editTrackmove = (e) => {
-    //     let rect = e.target.getBoundingClientRect();
-    //     let x = e.clientX - rect.x;
-    //     let y = e.clientY - rect.y;
-    //     let edit_track = document.getElementById("edit_track");
-    //     //edit_track.style.left = `${x}px`;
-    //     //edit_track.style.top = `${y}px`;
-    //     console.log(`x:${x} y:${y}`);
-    // }
-
-
 
     return (
         <div className="box">
@@ -151,9 +166,10 @@ export const ImageEdit = () => {
                         <div onMouseDown={(e) => mousedown(e, "resize_wh")} style={{ position: "absolute", width: "10px", height: "10px", background: "white", border: "1px solid black", left: `${width}px`, top: `${height}px`, cursor: "nw-resize" }} id="resize_wh"></div>
                         <div onMouseDown={(e) => mousedown(e, "resize_h")} style={{ position: "absolute", width: "10px", height: "10px", background: "white", border: "1px solid black", left: `${width / 2 - 10}px`, top: `${height}px`, cursor: "n-resize" }} id="resize_h"></div>
                         <div onMouseDown={(e) => mousedown(e, "resize_w")} style={{ position: "absolute", width: "10px", height: "10px", background: "white", border: "1px solid black", left: `${width}px`, top: `${height / 2 - 10}px`, cursor: "e-resize" }} id="resize_w"></div>
-                        <canvas ref={canvas} style={{ position: "absolute", display:"none"}} width={`${width}px`} height={`${height}px`}></canvas>
+                        <canvas onMouseDown={(e) => canvas_Mousedown(e)} ref={canvas} style={{ position: "absolute" }} width={`${width}px`} height={`${height}px`}></canvas>
                     </div>
-                    <div id="edit_track" style={{ position: "absolute", left: "20px", top: "10px", height: "100px", width: "200px" }}>
+                    <div id="select_track" style={{ left: `${selectRect.left}px`, top: `${selectRect.top}px`, width: `${selectRect.right -selectRect.left}px`, height: `${selectRect.bottom -selectRect.top}px`, position: "absolute", border: "1px solid black", borderStyle: "dashed" }}></div>
+                    <div id="edit_track" style={{ position: "absolute", left: "20px", top: "10px", height: "100px", width: "200px", display: "none" }}>
                         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gridTemplateRows: "1fr 1fr 1fr", width: "200px", height: "200px" }}>
                             <div onMouseDown={(e) => editTrackdown(e)} style={{ gridColumn: "1 / 4", gridRow: "1 / 4", margin: "5px", border: "1px solid #0078D7", borderStyle: "dashed", cursor: "move" }}></div>
                             <div style={{ gridColumn: "1", gridRow: "1", alignSelf: "start", justifySelf: "start", border: "1px solid black", background: "white", width: "10px", height: "10px" }}></div>
