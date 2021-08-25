@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { red } from "@material-ui/core/colors";
+import { useMemo } from "react";
 import { useState } from "react";
 import { useRef, useEffect } from "react"
 import './ImageEdit.css'
@@ -9,7 +10,7 @@ export const ImageEdit = () => {
     const [width, setWidth] = useState(640);
     const [height, setHeight] = useState(480);
     const [selectTrack, setSelectTrack] = useState({ left: 10, top: 10, right: 50, bottom: 50, isshow: false });
-    const [editTrack, setEditTrack] = useState({ left: 10, top: 10, right: 50, bottom: 50, isshow: false });
+    const [editTrack, setEditTrack] = useState({ left: 10, top: 10, right: 50, bottom: 50, isshow: false, limitrect:{ left: 10, top: 10, right: 50, bottom: 50} });
     useEffect(() => {
         fillRect(100, 100, 100, 100);
     }, [width, height]);
@@ -28,7 +29,6 @@ export const ImageEdit = () => {
     };
 
     let canvas_rect = { left: 0, top: 0, right: 0, bottom: 0 };
-    
     const canvas_Mousedown = (data) => {
         console.log(canvas.current.style.left);
         canvas_rect.left = parseInt(canvas.current.style.left);
@@ -41,7 +41,7 @@ export const ImageEdit = () => {
         let rect = paint.getBoundingClientRect();
         let x = data.clientX - rect.x - 5;
         let y = data.clientY - rect.y - 5;
-        setSelectTrack({ left: x, top: y, right: x, bottom: y, isshow: true });
+        setSelectTrack({ left: x, top: y, right: x, bottom: y, isshow: true, limitrect:{left: canvas_rect.left, top: canvas_rect.top, right: canvas_rect.right, bottom: canvas_rect.bottom} });
         console.log(`canvas_Mousedown x:${x} y:${y}`);
     }
 
@@ -58,17 +58,19 @@ export const ImageEdit = () => {
 
     const mousemove = (data) => {
         if (selectTrack.isshow === true) {
+            console.log(selectTrack);
             let paint = document.getElementById("paint");
             let rect = paint.getBoundingClientRect();
             let x = data.clientX - rect.x - 5;
             let y = data.clientY - rect.y - 5;
-            if(x < canvas_rect.top){
-                console.log("if(x < canvas_rect.top)");
-                x= canvas_rect.top;
+            console.log(`x:${x} y:${y}`);
+            if(x < canvas_rect.left){
+                console.log("if(x < canvas_rect.left)");
+                x= canvas_rect.left;
             }
-            else if(x>canvas_rect.bottom){
-                console.log("(x>canvas_rect.bottom");
-                x= canvas_rect.bottom;
+            else if(x>canvas_rect.right){
+                console.log("(x>canvas_rect.right");
+                x= canvas_rect.right;
             }
             setSelectTrack(prevState => {
                 return { ...prevState, ...{ right: x, bottom: y } };
@@ -170,7 +172,7 @@ export const ImageEdit = () => {
                         <div onMouseDown={(e) => mousedown(e, "resize_w")} style={{ position: "absolute", width: "10px", height: "10px", background: "white", border: "1px solid black", left: `${width}px`, top: `${height / 2 - 10}px`, cursor: "e-resize" }} id="resize_w"></div>
                         <canvas onMouseDown={(e) => canvas_Mousedown(e)} ref={canvas} style={{ position: "absolute", left:"0px", top:"0px" }} width={`${width}px`} height={`${height}px`}></canvas>
                     </div>
-                    <div id="select_track" style={{ left: `${selectTrack.left>selectTrack.right?selectTrack.right:selectTrack.left}px`, top: `${selectTrack.top>selectTrack.bottom?selectTrack.bottom:selectTrack.top}px`, width: `${Math.abs(selectTrack.right - selectTrack.left)}px`, height: `${Math.abs(selectTrack.bottom - selectTrack.top)}px`, display: `${selectTrack.isshow ? "block" : "none"}`, position: "absolute", border: "1px solid black", borderStyle: "dashed" }}></div>
+                    <div id="select_track" disabled style={{ left: `${(selectTrack.left>selectTrack.right?selectTrack.right:selectTrack.left)}px`, top: `${selectTrack.top>selectTrack.bottom?selectTrack.bottom:selectTrack.top}px`, width: `${Math.abs(selectTrack.right - selectTrack.left)}px`, height: `${Math.abs(selectTrack.bottom - selectTrack.top)}px`, display: `${selectTrack.isshow ? "block" : "none"}`, position: "absolute", border: "1px solid black", borderStyle: "dashed" }}></div>
                     <div id="edit_track" style={{ position: "absolute", left: "20px", top: "10px", height: "100px", width: "200px", display: "block" }}>
                         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gridTemplateRows: "1fr 1fr 1fr" }}>
                             <div onMouseDown={(e) => editTrackdown(e)} style={{ gridColumn: "1 / 4", gridRow: "1 / 4", margin: "5px", border: "1px solid #0078D7", borderStyle: "dashed", cursor: "move" }}></div>
