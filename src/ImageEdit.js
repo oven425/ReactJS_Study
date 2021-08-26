@@ -5,6 +5,8 @@ import { useState } from "react";
 import { useRef, useEffect } from "react"
 import './ImageEdit.css'
 
+
+
 export const ImageEdit = () => {
     const canvas = useRef();
     const [width, setWidth] = useState(640);
