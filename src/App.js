@@ -7,62 +7,20 @@ import { useState, useMemo } from 'react';
 import { useRef } from 'react';
 import { ImageEdit } from './ImageEdit';
 import { Ribbon } from './Ribbon'
-
-export const useRect = () => {
-  const [x,setX] = useState(0);
-  const [width,setWidth] = useState(0);
-  const [y,setY] = useState(0);
-  const [height,setHeight] = useState(0);
+import {useRect} from './useRect'
 
 
-  let left = useRef(0);
-  let top = 0;
-  let right = 0;
-  let bottom = 0;
-  const setBegin = (x, y) => {
-
-    left.current = x;
-    top = y;
-    console.log(`setBegin left:${left.current} top:${top}`);
-    change();
-  }
-  const setEnd = (x, y) => {
-    right = x;
-    bottom = y;
-    change();
-  }
-
-  const change=()=>{
-    console.log(`change left:${left.current} top:${top}`);
-    if(left.current > right){
-      console.log(`change1 left:${left.current} top:${top}`);
-      setX(right);
-    }
-    else{
-      console.log(`change2 left:${left.current} top:${top}`);
-      setX(left.current);
-    }
-    if(top > bottom){
-      setY(bottom);
-    }
-    else{
-      setY(top);
-    }
-    setWidth(Math.abs(left.current-right));
-    setHeight(Math.abs(top-bottom));
-  }
-
-  return [x, y, width, height, setBegin, setEnd];
-}
 function App() {
-  const[left,top,w,h,setBegin,setEnd] = useRect();
-  return(
-<div>
-  <button onClick={()=>setBegin(10,10)}>set begin</button>
-  <button onClick={()=>setEnd(110,110)}>set end</button>
-  <div>{`left:${left} top:${top} width:${w} height:${h}`}</div>
-</div>
-  );
+//   const[rect,setBegin,setEnd] = useRect();
+//   return(
+// <div>
+//   <button onClick={()=>setBegin(10,10)}>set begin</button>
+//   <button onClick={()=>setEnd(110,110)}>set end</button>
+//   {/* <div>{`left:${rect.x} top:${top} width:${w} height:${h}`}</div> */}
+//   <div>{JSON.stringify(rect)}</div>
+//   <div style={{left:`${rect.x}px`, top:`${rect.y}px`, width:`${rect.width}px`, height:`${rect.height}px`, background:"red", position:"relative"}}></div>
+// </div>
+//   );
 
   // const calendar = useRef()
   // const onSelectChange1 = (date) => {
@@ -86,9 +44,9 @@ function App() {
   // );
 
 
-  // return (
-  //   <ImageEdit></ImageEdit>
-  // );
+  return (
+    <ImageEdit></ImageEdit>
+  );
 }
 
 
