@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useRef, useEffect } from "react"
 import './ImageEdit.css'
 import { useRect } from './useRect'
-import { useResizeRect,ResizeTypes } from "./useEditRect";
+import { useResizeRect, ResizeTypes } from "./useEditRect";
 
 
 
@@ -18,8 +18,8 @@ export const ImageEdit = () => {
     const [selectRect, setSelectBegin, setSelectMove, setSelectEnd] = useRect(canvas_rect.current);
     const [editSizeRect, setEditSizeRectBegin, setEditSizeRectMove, setEditSizeRectEnd] = useRect();
     const [editRect, setEditRect] = useState({ x: 30, y: 60, width: 100, height: 200, isshow: false });
-    const[editresize, setEditResizeBegin,setEditResizeMove,setEditResizeEnd]=useResizeRect();
-    const[imgresize, setImgResizeBegin,setImgResizeMove,setImgResizeEnd]=useResizeRect();
+    const [editresize, setEditResizeBegin, setEditResizeMove, setEditResizeEnd] = useResizeRect();
+    //const[imgresize, setImgResizeBegin,setImgResizeMove,setImgResizeEnd]=useResizeRect();
     useEffect(() => {
         fillRect(100, 100, 100, 100);
     }, [width, height]);
@@ -108,7 +108,8 @@ export const ImageEdit = () => {
                     });
                     break;
                 case "left_top":
-                    setEditSizeRectMove(x,y);
+                case "top":
+                    setEditResizeMove(x, y);
                     break;
                 default: break;
             }
@@ -197,9 +198,10 @@ export const ImageEdit = () => {
                 editMovePos.current.y = y;
                 break;
             case "left_top":
-
+            case "top":
+            case "top_right":
                 //console.log(`editRect:${JSON.stringify(editRect)}`);
-                setEditSizeRectBegin(editRect.x, editRect.y, editRect.width, editRect.height);
+                setEditResizeBegin(action, editRect.x, editRect.y, editRect.width, editRect.height);
                 //console.log(`editResizeRect:${JSON.stringify(editSizeRect)}`);
                 break;
             default: break;
@@ -246,7 +248,7 @@ export const ImageEdit = () => {
                         <div onMouseDown={(e) => editTrackdown(e, "bottom")} style={{ gridColumn: "2", gridRow: "3", alignSelf: "end", justifySelf: "center", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "n-resize" }}></div>
                         <div onMouseDown={(e) => editTrackdown(e, "right_bottom")} style={{ gridColumn: "3", gridRow: "3", alignSelf: "end", justifySelf: "end", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "nw-resize" }}></div>
                     </div>
-                    <div style={{ left: `${editSizeRect.x}px`, top: `${editSizeRect.y}px`, width: `${editSizeRect.width}px`, height: `${editSizeRect.height}px`, display: `${editSizeRect.show ? "block" : "none"}`, position: "absolute", border: "1px solid black", borderStyle: "dashed" }}></div>
+                    <div style={{ left: `${editresize.x}px`, top: `${editresize.y}px`, width: `${editresize.width}px`, height: `${editresize.height}px`, display: `${editresize.show ? "block" : "none"}`, position: "absolute", border: "1px solid black", borderStyle: "dashed" }}></div>
                     <div id="resize_track" style={{ position: "absolute", width: "498px", height: "298px", border: "1px solid black", borderStyle: "dashed", display: "none" }}></div>
                 </div>
             </div>

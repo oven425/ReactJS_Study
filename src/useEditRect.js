@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
-import { useState } from "react"
+import { useState, useRef } from "react"
 export const ResizeTypes = {
-    none:'none',
+    none: 'none',
     left_top: 'left_top',
     top: 'top',
     top_right: 'top_right',
@@ -12,21 +12,45 @@ export const ResizeTypes = {
     left: 'left',
 };
 export const useResizeRect = () => {
-    const [rect, setRect] = useState({type:ResizeTypes.none, x: 0, y: 0, width: 0, height: 0, show: false });
-    let resizeType = ResizeTypes.left;
-    const resizeBegin = (type,x, y, width, height) => {
-        setRect({type, x: x, y: y, width: width, height: height, show: true });
+    const resizeType = useRef(ResizeTypes.none);
+    const [rect, setRect] = useState({ x: 0, y: 0, width: 0, height: 0, show: false });
+    //let resizeType = ResizeTypes.left;
+    const resizeBegin = (type, x, y, width, height) => {
+        resizeType.current = type;
+        console.log(resizeType.current);
+        setRect({ x: x, y: y, width: width, height: height, show: true });
     }
     const resizeMove = (x, y) => {
-switch(rect.type){
-    case ResizeTypes.left_top:
-        break;
-        case ResizeTypes.top:
-            break;
-    case ResizeTypes.right:
-        break;
-    default:break;
-}
+        console.log(resizeType.current);
+        let left = rect.x;
+        let top = rect.y;
+        let right = left + rect.width;
+        let bottom = top + rect.height;
+        switch (resizeType.current) {
+            case ResizeTypes.left_top:
+                setRect(obj => {
+                    return {
+                        ...obj,
+                        x: x,
+                        y: y,
+                        width: right - x,
+                        height: bottom - y
+                    }
+                });
+                break;
+            case ResizeTypes.top:
+                setRect(obj => {
+                    return {
+                        ...obj,
+                        y: y,
+                        height: bottom - y
+                    }
+                });
+                break;
+            case ResizeTypes.right:
+                break;
+            default: break;
+        }
     }
     const resizeEnd = () => {
         setRect(obj => {
