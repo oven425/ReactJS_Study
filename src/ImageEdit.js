@@ -109,21 +109,17 @@ export const ImageEdit = () => {
                     break;
                 case "left_top":
                 case "top":
+                case "top_right":
+                case "right":
+                case "right_bottom":
+                case "bottom":
+                case "left_bottom":
+                case "left":
                     setEditResizeMove(x, y);
                     break;
                 default: break;
             }
-
-            // tracker.style.left = `${x}px`;
-            // tracker.style.top = `${y}px`;
-            // if (x <= 1 || y <= 1) {
-            //     console.log(rect);
-            //     console.log(`clientX:${data.clientX} clientY:${data.clientY}`);
-            //     console.log(`x:${x} y:${y}`);
-            // }
-
         }
-
 
         if (resizemode !== "") {
             let tracker = document.getElementById("resize_track");
@@ -146,14 +142,15 @@ export const ImageEdit = () => {
                 default: break;
 
             }
-
         }
-
     }
 
     const mouseup = (data) => {
         if (selectRect.show === true) {
             setSelectEnd();
+        }
+        else if (editresize.show === true) {
+            setEditResizeEnd();
         }
         else if (editReizeAction.current !== "") {
             editReizeAction.current = "";
@@ -190,6 +187,7 @@ export const ImageEdit = () => {
         let rect = e.target.getBoundingClientRect();
         let x = e.clientX - rect.x + 5;
         let y = e.clientY - rect.y + 5;
+        
         editReizeAction.current = action;
         switch (action) {
             case "drag":
@@ -200,6 +198,11 @@ export const ImageEdit = () => {
             case "left_top":
             case "top":
             case "top_right":
+            case "right":
+            case "right_bottom":
+            case "bottom":
+            case "left_bottom":
+            case "left":
                 //console.log(`editRect:${JSON.stringify(editRect)}`);
                 setEditResizeBegin(action, editRect.x, editRect.y, editRect.width, editRect.height);
                 //console.log(`editResizeRect:${JSON.stringify(editSizeRect)}`);
@@ -248,7 +251,7 @@ export const ImageEdit = () => {
                         <div onMouseDown={(e) => editTrackdown(e, "bottom")} style={{ gridColumn: "2", gridRow: "3", alignSelf: "end", justifySelf: "center", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "n-resize" }}></div>
                         <div onMouseDown={(e) => editTrackdown(e, "right_bottom")} style={{ gridColumn: "3", gridRow: "3", alignSelf: "end", justifySelf: "end", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "nw-resize" }}></div>
                     </div>
-                    <div style={{ left: `${editresize.x}px`, top: `${editresize.y}px`, width: `${editresize.width}px`, height: `${editresize.height}px`, display: `${editresize.show ? "block" : "none"}`, position: "absolute", border: "1px solid black", borderStyle: "dashed" }}></div>
+                    <div style={{ left: `${editresize.x}px`, top: `${editresize.y}px`, width: `${editresize.width}px`, height: `${editresize.height}px`, display: `${editresize.show ? "block" : "none"}`,cursor:`${editresize.cursor}`, position: "absolute", border: "1px solid black", borderStyle: "dashed" }}></div>
                     <div id="resize_track" style={{ position: "absolute", width: "498px", height: "298px", border: "1px solid black", borderStyle: "dashed", display: "none" }}></div>
                 </div>
             </div>
