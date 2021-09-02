@@ -70,6 +70,9 @@ export const useResizeRect = () => {
                 });
                 break;
             case ResizeTypes.top:
+                if(y>=limit.current.bottom){
+                    y=limit.current.bottom;
+                }
                 setRect(obj => {
                     return {
                         ...obj,
@@ -79,6 +82,9 @@ export const useResizeRect = () => {
                 });
                 break;
             case ResizeTypes.top_right:
+                if(y>=limit.current.bottom){
+                    y=limit.current.bottom;
+                }
                 setRect(obj => {
                     return {
                         ...obj,
@@ -114,6 +120,12 @@ export const useResizeRect = () => {
                 });
                 break;
             case ResizeTypes.left_bottom:
+                if(x >= limit.current.right){
+                    x = limit.current.right;
+                }
+                if(y <= limit.current.top){
+                    y = limit.current.top;
+                }
                 setRect(obj => {
                     return {
                         ...obj,
@@ -124,6 +136,9 @@ export const useResizeRect = () => {
                 });
                 break;
             case ResizeTypes.left:
+                if(x >= limit.current.right){
+                    x = limit.current.right;
+                }
                 setRect(obj => {
                     return {
                         ...obj,

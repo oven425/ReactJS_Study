@@ -16,7 +16,6 @@ export const ImageEdit = () => {
     //const [selectTrack, setSelectTrack] = useState({ left: 10, top: 10, right: 50, bottom: 50, isshow: false });
     const canvas_rect = useRef({ left: 0, top: 0, right: 0, bottom: 0 });
     const [selectRect, setSelectBegin, setSelectMove, setSelectEnd] = useRect(canvas_rect.current);
-    const [editSizeRect, setEditSizeRectBegin, setEditSizeRectMove, setEditSizeRectEnd] = useRect();
     const [editRect, setEditRect] = useState({ x: 30, y: 60, width: 100, height: 200, isshow: false });
     const [editresize, setEditResizeBegin, setEditResizeMove, setEditResizeEnd] = useResizeRect();
     //const[imgresize, setImgResizeBegin,setImgResizeMove,setImgResizeEnd]=useResizeRect();
@@ -39,7 +38,19 @@ export const ImageEdit = () => {
 
 
     const canvas_Mousedown = (data) => {
-        console.log(canvas.current.style.left);
+        //console.log(canvas.current.style.left);
+        console.log(`editRect.isshow:${editRect.isshow}`);
+        if(editRect.isshow===true){
+            console.log("canvas_Mousedown if(editRect.isshow===true)");
+            setEditRect(obj=>{
+                return{
+                    ...obj,
+                    isshow:false
+                }
+            });
+            return;
+        }
+        console.log("canvas_Mousedown setSelectBegin");
         canvas_rect.current.left = parseInt(canvas.current.style.left);
         canvas_rect.current.top = parseInt(canvas.current.style.top);
         canvas_rect.current.right = canvas_rect.current.left + canvas.current.width;
@@ -147,12 +158,26 @@ export const ImageEdit = () => {
 
     const mouseup = (data) => {
         if (selectRect.show === true) {
+            console.log(" if (selectRect.show === true");
             setSelectEnd();
+            setEditRect({x:selectRect.x, y:selectRect.y,width:selectRect.width, height:selectRect.height,isshow:true});
         }
         else if (editresize.show === true) {
+            console.log("else if (editresize.show === true)");
             setEditResizeEnd();
+            //setEditRect({x:editresize.x, y:editresize.y,width:editresize.width, height:editresize.height,isshow:true});
+            setEditRect(obj=>{
+                return{
+                    ...obj,
+                    x:editresize.x,
+                    y:editresize.y,
+                    width:editresize.width, 
+                    height:editresize.height
+                }
+            });
         }
         else if (editReizeAction.current !== "") {
+            console.log("editReizeAction.current !== ");
             editReizeAction.current = "";
         }
         else if (resizemode !== "") {
@@ -183,7 +208,7 @@ export const ImageEdit = () => {
     const editMovePos = useRef({ x: 0, y: 0 });
     const editReizeAction = useRef("");
     const editTrackdown = (e, action) => {
-        console.log(`editTrackdown action:${action}`);
+        //console.log(`editTrackdown action:${action}`);
         let rect = e.target.getBoundingClientRect();
         let x = e.clientX - rect.x + 5;
         let y = e.clientY - rect.y + 5;
@@ -227,20 +252,7 @@ export const ImageEdit = () => {
                     </div>
                     {/* <div id="select_track" disabled style={{ left: `${(selectTrack.left>selectTrack.right?selectTrack.right:selectTrack.left)}px`, top: `${selectTrack.top>selectTrack.bottom?selectTrack.bottom:selectTrack.top}px`, width: `${Math.abs(selectTrack.right - selectTrack.left)}px`, height: `${Math.abs(selectTrack.bottom - selectTrack.top)}px`, display: `${selectTrack.isshow ? "block" : "none"}`, position: "absolute", border: "1px solid black", borderStyle: "dashed" }}></div> */}
                     <div style={{ left: `${selectRect.x}px`, top: `${selectRect.y}px`, width: `${selectRect.width}px`, height: `${selectRect.height}px`, display: `${selectRect.show ? "block" : "none"}`, position: "absolute", border: "1px solid black", borderStyle: "dashed" }}></div>
-                    {/* <div id="edit_track" style={{ position: "absolute", left: "20px", top: "10px", height: "300px", width: "300px"}}>
-                        <div style={{ display: "grid", height:"300px", gridTemplateColumns: "1fr 1fr 1fr", gridTemplateRows: "1fr 1fr 1fr" }}>
-                            <div onMouseDown={(e) => editTrackdown(e)} style={{ gridColumn: "1 / 4", gridRow: "1 / 4", margin: "5px", border: "1px solid #0078D7", borderStyle: "dashed", cursor: "move" }}></div>
-                            <div style={{ gridColumn: "1", gridRow: "1", alignSelf: "start", justifySelf: "start", border: "1px solid black", background: "white", width: "10px", height: "10px" }}></div>
-                            <div style={{ gridColumn: "2", gridRow: "1", alignSelf: "start", justifySelf: "center", border: "1px solid black", background: "white", width: "10px", height: "10px" }}></div>
-                            <div style={{ gridColumn: "3", gridRow: "1", alignSelf: "start", justifySelf: "end", border: "1px solid black", background: "white", width: "10px", height: "10px" }}></div>
-                            <div style={{ gridColumn: "1", gridRow: "2", alignSelf: "center", justifySelf: "start", border: "1px solid black", background: "white", width: "10px", height: "10px" }}></div>
-                            <div style={{ gridColumn: "3", gridRow: "2", alignSelf: "center", justifySelf: "end", border: "1px solid black", background: "white", width: "10px", height: "10px" }}></div>
-                            <div style={{ gridColumn: "1", gridRow: "3", alignSelf: "end", justifySelf: "start", border: "1px solid black", background: "white", width: "10px", height: "10px" }}></div>
-                            <div style={{ gridColumn: "2", gridRow: "3", alignSelf: "end", justifySelf: "center", border: "1px solid black", background: "white", width: "10px", height: "10px" }}></div>
-                            <div style={{ gridColumn: "3", gridRow: "3", alignSelf: "end", justifySelf: "end", border: "1px solid black", background: "white", width: "10px", height: "10px" }}></div>
-                        </div>
-                    </div> */}
-                    <div id="edit_track" style={{ position: "absolute", left: `${editRect.x}px`, top: `${editRect.y}px`, height: `${editRect.height}px`, width: `${editRect.width}px`, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gridTemplateRows: "1fr 1fr 1fr" }}>
+                    <div id="edit_track" style={{ position: "absolute", left: `${editRect.x}px`, top: `${editRect.y}px`, height: `${editRect.height}px`, width: `${editRect.width}px`, display: `${editRect.isshow?"grid":"none"}`, gridTemplateColumns: "1fr 1fr 1fr", gridTemplateRows: "1fr 1fr 1fr" }}>
                         <div onMouseDown={(e) => editTrackdown(e, "drag")} style={{ gridColumn: "1 / 4", gridRow: "1 / 4", margin: "5px", border: "1px solid #0078D7", borderStyle: "dashed", cursor: "move" }}></div>
                         <div onMouseDown={(e) => editTrackdown(e, ResizeTypes.left_top)} style={{ gridColumn: "1", gridRow: "1", alignSelf: "start", justifySelf: "start", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "nw-resize" }}></div>
                         <div onMouseDown={(e) => editTrackdown(e, ResizeTypes.top)} style={{ gridColumn: "2", gridRow: "1", alignSelf: "start", justifySelf: "center", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "n-resize" }}></div>
