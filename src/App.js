@@ -7,46 +7,70 @@ import { useState, useMemo } from 'react';
 import { useRef } from 'react';
 import { ImageEdit } from './ImageEdit';
 import { Ribbon } from './Ribbon'
-import {useRect} from './useRect'
+import { useRect } from './useRect'
+import {useSelectRect} from './useSelectRect'
 
 
 function App() {
-//   const[rect,setBegin,setEnd] = useRect();
-//   return(
-// <div>
-//   <button onClick={()=>setBegin(10,10)}>set begin</button>
-//   <button onClick={()=>setEnd(110,110)}>set end</button>
-//   {/* <div>{`left:${rect.x} top:${top} width:${w} height:${h}`}</div> */}
-//   <div>{JSON.stringify(rect)}</div>
-//   <div style={{left:`${rect.x}px`, top:`${rect.y}px`, width:`${rect.width}px`, height:`${rect.height}px`, background:"red", position:"relative"}}></div>
-// </div>
-//   );
+  const [selectRect, setSelectRectBegin, setSelectRectMove, setSelectRectEnd] = useSelectRect();
+  const mouseDown = (e) => {
+    console.log(e);
+    
+    let paint = document.getElementById("paint");
+    if(e.target === paint){
+      let rect = paint.getBoundingClientRect();
+      let x = e.clientX - rect.x;
+      let y = e.clientY - rect.y;
+      let limit = {x:0,y:0,width:0,height:0};
+      limit.x = parseInt(paint.style.left);
+      limit.y = parseInt(paint.style.top);
+      limit.width = parseInt(paint.style.width);
+      limit.height = parseInt(paint.style.height);
+      setSelectRectBegin(x, y,0,0, limit);
+    }
+    
+  }
 
-  // const calendar = useRef()
-  // const onSelectChange1 = (date) => {
-  //   console.log(`App onSelectChange`)
-  //   console.log(date)
-  // }
+  const mouseMove = (e) => {
+    //console.log(e);
+    if(selectRect.show===true){
+      let paint = document.getElementById("paint");
+      let rect = paint.getBoundingClientRect();
+      let x = e.clientX - rect.x ;
+      let y = e.clientY - rect.y ;
+      setSelectRectMove(x, y);
+    }
+    
+  }
 
-  // const nextMonth = () => {
-  //   console.log("App nextMonth")
-  //   console.log(calendar)
-  //   calendar.current.nextMonth()
-  // }
+  const mouseUp = (e) => {
+    console.log(e);
+    setSelectRectEnd();
+  }
 
-  // return (
-  //   <div>
-  //     {/* <MediaCapture></MediaCapture> */}
-  //     <button onClick={nextMonth}>Test calendar method</button>
-  //     <Calendar ref={calendar} onSelectChange={onSelectChange1}/>
-  //   </div>
-
-  // );
-
+  const contextMenu=(e)=>{
+    console.log(e);
+  }
 
   return (
-    <ImageEdit></ImageEdit>
-  );
+    <div className="box">
+      <div className="row header">
+        Riibon
+      </div>
+      <div id="rowcontent" className="row content" onMouseDown={(e) => { mouseDown(e) }} onMouseMove={(e) => { mouseMove(e) }} onMouseUp={(e) => { mouseUp(e) }} onContextMenu={(e)=>contextMenu(e)}>
+        <div id="paint" style={{ position: "relative", background: "wheat", left:"0px", top:"0px", width: "800px", height: "600px", marginTop: "5px", marginLeft: "5px" }}>
+          <div id="select" style={{ left: `${selectRect.x}px`, top: `${selectRect.y}px`, width: `${selectRect.width}px`, height: `${selectRect.height}px`, display:`${selectRect.show?"block":"none"}`, border: "1px solid black", borderStyle: "dashed", position: "absolute" }} ></div>
+        </div>
+
+      </div>
+
+    </div>
+
+  )
+
+  // return (
+  //   <ImageEdit></ImageEdit>
+  // );
 }
 
 
