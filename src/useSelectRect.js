@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export const useSelectRect = () => {
+  const minRect = useRef({width:5,height:5});
   const limitRect = useRef({left:0,top:0,right:0,bottom:0});
   const [rect, setRect] = useState({ x: 0, y: 0, width: 0, height: 0, show: false });
   const rect_temp = useRef({ left: 0, top: 0, right: 0, bottom: 0, show: false });
@@ -63,7 +64,7 @@ export const useSelectRect = () => {
     else if(rc.top<=limitRect.current.top){
       rc.top = limitRect.current.top;
     }
-    
+
     setRect(obj => {
       return {
         ...obj,
