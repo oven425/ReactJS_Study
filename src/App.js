@@ -9,7 +9,8 @@ import { ImageEdit } from './ImageEdit';
 import { Ribbon } from './Ribbon'
 import { useRect } from './useRect'
 import { useSelectRect } from './useSelectRect'
-import { useResizeRect, ResizeTypes } from "./useEditRect";
+import { useResizeRect, ResizeTypes } from "./useResizeRect";
+import { useEditRect } from './useEditRect'
 
 
 
@@ -17,21 +18,32 @@ function App() {
   const canvas = useRef();
   const [canvasSize, setCanvasSize] = useState({ width: 800, height: 600 });
   const [selectRect, setSelectRectBegin, setSelectRectMove, setSelectRectEnd] = useSelectRect();
-  const [editRect, setEditRect] = useState({ x: 30, y: 60, width: 100, height: 200, show: false });
+  //const [editRect, setEditRect] = useState({ x: 30, y: 60, width: 100, height: 200, show: false });
   const [resizeRect, setResizeRectBegin, setResizeRectMove, setResizeRectEnd] = useResizeRect();
+  const [editRect, showEditRect, hideEditRect, dragEditRectBegin, dragEditRectMove, dragEditRectEnd] = useEditRect();
   const editMovePos = useRef({ x: 0, y: 0 });
   const editReizeAction = useRef("");
   useEffect(() => {
-    //setResizeMove(0,0, directions.EAST);
-    const ctx = canvas.current.getContext("2d");
-    //console.log(`width:${video.width}  height:${video.height}`);
-    ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
-    ctx.save();   //儲存狀態
-    ctx.fillStyle = '#ffff00';
-    //ctx.fillRect(x, y, width, height);
-    ctx.fillRect(0, 0, canvas.current.width, canvas.current.height);
+    // const ctx = canvas.current.getContext("2d");
 
-    ctx.restore(); //到此才輸出，才不會還沒整體操作完就放出，會造成畫面快速抖動
+    // //console.log(`width:${video.width}  height:${video.height}`);
+    // ctx.clearRect(0, 0, canvas.current.width, canvas.current.height);
+    // ctx.save();   //儲存狀態
+    // ctx.fillStyle = '#ffff00';
+    // //ctx.fillRect(x, y, width, height);
+    // ctx.fillRect(0, 0, canvas.current.width, canvas.current.height);
+
+    // ctx.restore(); //到此才輸出，才不會還沒整體操作完就放出，會造成畫面快速抖動
+
+    const ctx = canvas.current.getContext("2d");
+    ctx.setLineDash([5,5]);
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'black';
+
+    ctx.beginPath();
+    ctx.moveTo(10, 100);
+    ctx.lineTo(400, 100);
+    ctx.stroke();
   }, [])
 
   const mouseDown = (e, action) => {
@@ -46,6 +58,10 @@ function App() {
 
       console.log(`id:${e.target.id} ${e.target.id === "edit_track_left_top"}`);
       switch (e.target.id) {
+        case "edit_track_drag":
+          editReizeAction.current = action;
+          dragEditRectBegin(x,y,{x:0,y:0,width:canvasSize.width,height:canvasSize.height});
+          break;
         case "edit_track_left_top":
         case "edit_track_top":
         case "edit_track_top_right":
@@ -61,31 +77,10 @@ function App() {
           editReizeAction.current = "";
           break;
       }
-
-
-
-
-
-      // switch (action) {
-      //     case "drag":
-      //         //editMovePos.current.x = x;
-      //         //editMovePos.current.y = y;
-      //         break;
-      //     case "left_top":
-      //     case "top":
-      //     case "top_right":
-      //     case "right":
-      //     case "right_bottom":
-      //     case "bottom":
-      //     case "left_bottom":
-      //     case "left":
-      //         //setEditResizeBegin(action, editRect.x, editRect.y, editRect.width, editRect.height);
-      //         break;
-      //     default: break;
-      // }
     }
     if (x < canvasSize.width && y < canvasSize.height && editReizeAction.current === "") {
-      setEditRect({ x: 0, y: 0, width: 0, height: 0, show: false });
+      hideEditRect();
+      //setEditRect({ x: 0, y: 0, width: 0, height: 0, show: false });
       let limit = { x: 0, y: 0, width: 0, height: 0 };
       limit.x = parseInt(paint.style.left);
       limit.y = parseInt(paint.style.top);
@@ -104,10 +99,17 @@ function App() {
     let y = e.clientY - rect.y;
     console.log(`action:${editReizeAction.current}`);
     if (editReizeAction.current !== "") {
-      setResizeRectMove(x, y);
+      switch (editReizeAction.current) {
+        case "drag":
+          dragEditRectMove(x,y);
+          break;
+        default:
+          setResizeRectMove(x, y);
+          break;
+      }
+
     }
     else if (selectRect.show === true) {
-
       setSelectRectMove(x, y);
     }
 
@@ -116,13 +118,21 @@ function App() {
   const mouseUp = (e) => {
     console.log(e.target);
     if (editReizeAction.current !== "") {
-      setResizeRectEnd();
-      setEditRect({ x: resizeRect.x, y: resizeRect.y, width: resizeRect.width, height: resizeRect.height, show: true });
+      switch (editReizeAction.current) {
+        case "drag":
+          break;
+        default:
+          setResizeRectEnd();
+          //setEditRect({ x: resizeRect.x, y: resizeRect.y, width: resizeRect.width, height: resizeRect.height, show: true });
+          showEditRect(resizeRect.x, resizeRect.y, resizeRect.width, resizeRect.height);
+          break;
+      }
     }
     if (selectRect.show === true) {
       setSelectRectEnd();
       if (selectRect.width > 0 && selectRect.height > 0) {
-        setEditRect({ x: selectRect.x, y: selectRect.y, width: selectRect.width, height: selectRect.height, show: true });
+        //setEditRect({ x: selectRect.x, y: selectRect.y, width: selectRect.width, height: selectRect.height, show: true });
+        showEditRect(selectRect.x, selectRect.y, selectRect.width, selectRect.height);
       }
     }
     editReizeAction.current = "";
@@ -132,32 +142,6 @@ function App() {
     console.log(e);
     e.preventDefault();
   }
-
-
-  // const editTrackdown = (e, action) => {
-  //     let rect = e.target.getBoundingClientRect();
-  //     let x = e.clientX - rect.x + 5;
-  //     let y = e.clientY - rect.y + 5;
-
-  //     editReizeAction.current = action;
-  //     switch (action) {
-  //         case "drag":
-  //             editMovePos.current.x = x;
-  //             editMovePos.current.y = y;
-  //             break;
-  //         case "left_top":
-  //         case "top":
-  //         case "top_right":
-  //         case "right":
-  //         case "right_bottom":
-  //         case "bottom":
-  //         case "left_bottom":
-  //         case "left":
-  //             //setEditResizeBegin(action, editRect.x, editRect.y, editRect.width, editRect.height);
-  //             break;
-  //         default: break;
-  //     }
-  // }
 
   return (
     <div className="box">
@@ -179,7 +163,7 @@ function App() {
             <div id="edit_track_bottom" onMouseDown={(e) => mouseDown(e, ResizeTypes.bottom)} style={{ gridColumn: "2", gridRow: "3", alignSelf: "end", justifySelf: "center", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "n-resize", marginBottom: "-5px" }}></div>
             <div id="edit_track_right_bottom" onMouseDown={(e) => mouseDown(e, ResizeTypes.right_bottom)} style={{ gridColumn: "3", gridRow: "3", alignSelf: "end", justifySelf: "end", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "nw-resize", marginRight: "-5px", marginBottom: "-5px" }}></div>
           </div>
-          <div style={{ left: `${resizeRect.x}px`, top: `${resizeRect.y}px`, width: `${resizeRect.width}px`, height: `${resizeRect.height}px`, display: `${resizeRect.show ? "block" : "none"}`, border: "1px solid black", borderStyle: "dashed", position: "absolute" }}></div>
+          <div style={{ left: `${resizeRect.x}px`, top: `${resizeRect.y}px`, width: `${resizeRect.width}px`, height: `${resizeRect.height}px`, display: `${resizeRect.show ? "block" : "none"}`, cursor: `${resizeRect.cursor}`, border: "1px solid black", borderStyle: "dashed", position: "absolute" }}></div>
         </div>
 
 
