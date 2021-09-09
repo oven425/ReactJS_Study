@@ -35,15 +35,48 @@ function App() {
 
     // ctx.restore(); //到此才輸出，才不會還沒整體操作完就放出，會造成畫面快速抖動
 
-    const ctx = canvas.current.getContext("2d");
-    ctx.setLineDash([5,5]);
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = 'black';
+    // const ctx = canvas.current.getContext("2d");
+    // ctx.setLineDash([5, 5]);
+    // ctx.lineWidth = 1;
+    // ctx.strokeStyle = 'black';
 
-    ctx.beginPath();
-    ctx.moveTo(10, 100);
-    ctx.lineTo(400, 100);
-    ctx.stroke();
+    // ctx.beginPath();
+    // ctx.moveTo(10, 100);
+    // ctx.lineTo(400, 100);
+    // ctx.stroke();
+
+
+        var ctx = canvas.current.getContext("2d");
+        console.log(`width:${canvas.current.width}  height:${canvas.current.height}`);
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, canvas.current.width, canvas.current.height);
+        ctx.strokeStyle = '#F9F9F9';
+        for(let y=0;y<canvas.current.height;y=y+10){
+            ctx.moveTo(0, y+0.5);
+            ctx.lineTo(canvas.current.width, y+0.5);
+            //ctx.stroke();
+        }
+        for(let x=0;x<canvas.current.width;x=x+10){
+            ctx.moveTo(x+0.5, 0);
+            ctx.lineTo(x+0.5, canvas.current.height);
+            //ctx.stroke();
+        }
+
+        ctx.strokeStyle = '#808080';
+        for(let y=0;y<canvas.current.height;y=y+10){
+            ctx.setLineDash([1, 1]);
+            ctx.moveTo(0, y+0.5);
+            ctx.lineTo(canvas.current.width, y+0.5);
+            //ctx.stroke();
+        }
+
+        for(let x=0;x<canvas.current.width;x=x+10){
+            ctx.setLineDash([1, 1]);
+            ctx.moveTo(x+0.5, 0);
+            ctx.lineTo(x+0.5, canvas.current.height);
+            //ctx.stroke();
+        }
+        ctx.stroke();
   }, [])
 
   const mouseDown = (e, action) => {
@@ -60,7 +93,7 @@ function App() {
       switch (e.target.id) {
         case "edit_track_drag":
           editReizeAction.current = action;
-          dragEditRectBegin(x,y,{x:0,y:0,width:canvasSize.width,height:canvasSize.height});
+          dragEditRectBegin(x, y, { x: 0, y: 0, width: canvasSize.width, height: canvasSize.height });
           break;
         case "edit_track_left_top":
         case "edit_track_top":
@@ -97,11 +130,11 @@ function App() {
     let rect = paint.getBoundingClientRect();
     let x = e.clientX - rect.x;
     let y = e.clientY - rect.y;
-    console.log(`action:${editReizeAction.current}`);
+    //console.log(`action:${editReizeAction.current}`);
     if (editReizeAction.current !== "") {
       switch (editReizeAction.current) {
         case "drag":
-          dragEditRectMove(x,y);
+          dragEditRectMove(x, y);
           break;
         default:
           setResizeRectMove(x, y);
@@ -150,7 +183,15 @@ function App() {
       </div>
       <div id="rowcontent" className="row content" onMouseDown={(e) => { mouseDown(e) }} onMouseMove={(e) => { mouseMove(e) }} onMouseUp={(e) => { mouseUp(e) }} onContextMenu={(e) => contextMenu(e)}>
         <div id="paint" style={{ position: "relative", background: "wheat", left: "0px", top: "0px", width: `${canvasSize.width}px`, height: `${canvasSize.height}px`, marginTop: "5px", marginLeft: "5px" }}>
-          <canvas ref={canvas} style={{ position: "absolute" }} width={`${canvasSize.width}px`} height={`${canvasSize.height}px`}></canvas>
+          <canvas ref={canvas} style={{ position: "absolute", display:"none" }} width={`${canvasSize.width}px`} height={`${canvasSize.height}px`}></canvas>
+          <div style={{background:"red", display:"grid", gridTemplateColumns:"1fr 1fr", gridTemplateRows:"auto auto"}}>
+            <div style={{width:"640px",height:"480px", background:"green"}}></div>
+            <div style={{alignSelf:"center", gridColumn:"2", background:"white", border:"1px solid balck",cursor:"w-resize",width:"10px",hight:"10px"}}></div>
+            <div style={{gridRow:"2", gridColumn:"2", background:"white", border:"1px solid balck",cursor:"nw-resize",width:"10px",hight:"10px"}}></div>
+            <div style={{justifySelf:"center", gridRow:"2", background:"white", border:"1px solid balck",cursor:"n-resize",width:"10px",hight:"10px"}}></div>
+            
+        </div>  
+          
           <div id="select" style={{ left: `${selectRect.x}px`, top: `${selectRect.y}px`, width: `${selectRect.width}px`, height: `${selectRect.height}px`, display: `${selectRect.show ? "block" : "none"}`, border: "1px solid black", borderStyle: "dashed", position: "absolute" }} ></div>
           <div id="edit_track" style={{ border: "1px solid #0078D7", borderStyle: "dashed", position: "absolute", left: `${editRect.x}px`, top: `${editRect.y}px`, height: `${editRect.height}px`, width: `${editRect.width}px`, display: `${editRect.show ? "grid" : "none"}`, gridTemplateColumns: "1fr 1fr 1fr", gridTemplateRows: "1fr 1fr 1fr" }}>
             <div id="edit_track_drag" onMouseDown={(e) => mouseDown(e, "drag")} style={{ gridColumn: "1 / 4", gridRow: "1 / 4", cursor: "move" }}></div>
@@ -167,6 +208,9 @@ function App() {
         </div>
 
 
+      </div>
+      <div className="row footer">
+        status bar
       </div>
     </div>
   )
