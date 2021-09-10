@@ -29,8 +29,8 @@ export const useSelectRect = () => {
     change();
   }
 
-  const setEnd = (isShow = false) => {
-    rect_temp.current.show = isShow;
+  const setEnd = () => {
+    rect_temp.current.show = false;
     change();
   }
   const change = () => {
