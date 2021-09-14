@@ -11,7 +11,7 @@ body {
   }
   
   .box .row {
-    border: 1px dotted grey;
+    /* border: 1px dotted grey; */
   }
   
   .box .row.header {
@@ -40,7 +40,7 @@ body {
     top: 10px;
   } */
   
-  div.b {
+  /* div.b {
     position: absolute;
     left: auto;
     width: 100px;
@@ -54,4 +54,4 @@ body {
     width: 200px;
     height: 120px;
     border: 3px solid green;
-  } 
+  }  */
