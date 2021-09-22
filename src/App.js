@@ -42,8 +42,9 @@ function App() {
     console.log(`offsetWidth:${paint.offsetWidth * window.devicePixelRatio}  offsetHeight:${paint.offsetHeight * window.devicePixelRatio}`);
 
 
-
+    var scale = window.devicePixelRatio; 
     var ctx = canvas.current.getContext("2d");
+    ctx.scale(scale, scale);
     console.log(`width:${canvas.current.width}  height:${canvas.current.height}`);
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, canvas.current.width, canvas.current.height);
@@ -81,9 +82,9 @@ function App() {
     //console.log(e.target.id);
     //console.log(`action:${action}`);
     let paint = document.getElementById("paint");
-    console.log(`paint offsetWidth:${paint.offsetWidth} offsetLeft:${paint.offsetLeft}`);
-    console.log(`paint scrollWidth:${paint.scrollWidth} scrollLeft:${paint.scrollLeft}`);
-    console.log(`paint clientWidth:${paint.clientWidth} clientLeft:${paint.clientLeft}`);
+    //console.log(`paint offsetWidth:${paint.offsetWidth} offsetLeft:${paint.offsetLeft}`);
+    //console.log(`paint scrollWidth:${paint.scrollWidth} scrollLeft:${paint.scrollLeft}`);
+    //console.log(`paint clientWidth:${paint.clientWidth} clientLeft:${paint.clientLeft}`);
 
 
     if (paint === null) {
@@ -92,16 +93,22 @@ function App() {
     let rect = paint.getBoundingClientRect();
     let x = e.clientX - rect.x;
     let y = e.clientY - rect.y;
+    
+
     if (canvasResizeAction.current === "")
+    
       switch (e.target.id) {
         case "canvas_track_right":
         case "canvas_track_right_bottom":
         case "canvas_track_bottom":
           canvasResizeAction.current = action;
-          setResizeRectBegin(action, 0, 0, canvasSize.width, canvasSize.height);
+
+          setResizeRectBegin(action, 0, 0, canvasSize.width/window.devicePixelRatio, canvasSize.height/window.devicePixelRatio);
           break;
         default: break;
+        
       }
+      
     if (editRect.show === true && editReizeAction.current === "") {
       switch (e.target.id) {
         case "edit_track_drag":
@@ -123,16 +130,23 @@ function App() {
           editReizeAction.current = "";
           break;
       }
+      
     }
+
     if (x < canvasSize.width && y < canvasSize.height && editReizeAction.current === "") {
       hideEditRect();
-      let limit = { x: 0, y: 0, width: 0, height: 0 };
-      limit.x = parseInt(paint.style.left);
-      limit.y = parseInt(paint.style.top);
-      limit.width = parseInt(paint.style.width);
-      limit.height = parseInt(paint.style.height);
-      setSelectRectBegin(x, y, 0, 0, limit);
+      if(canvasResizeAction.current===""){
+        let limit = { x: 0, y: 0, width: 0, height: 0 };
+        limit.x = parseInt(paint.style.left);
+        limit.y = parseInt(paint.style.top);
+        limit.width = parseInt(paint.style.width);
+        limit.height = parseInt(paint.style.height);
+        setSelectRectBegin(x, y, 0, 0, limit);
+
+      }
+      
     }
+    
     e.cancelBubble = true;
   }
 
@@ -167,10 +181,10 @@ function App() {
   }
 
   const mouseUp = (e) => {
-    //console.log(`mouseUp:${e.target}`);
+    console.log(`mouseUp canvasResizeAction:${canvasResizeAction.current} editReizeAction:${editReizeAction.current} selectRect.show:${selectRect.show}`);
     if (canvasResizeAction.current !== "") {
       setResizeRectEnd();
-      setCanvasSize({ width: resizeRect.width, height: resizeRect.height });
+      setCanvasSize({ width: resizeRect.width*window.devicePixelRatio, height: resizeRect.height*window.devicePixelRatio });
       canvasResizeAction.current = "";
     }
     if (editReizeAction.current !== "") {
