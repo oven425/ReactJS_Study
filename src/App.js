@@ -12,10 +12,9 @@ import { useSelectRect } from './useSelectRect'
 import { useResizeRect, ResizeTypes } from "./useResizeRect";
 import { useEditRect } from './useEditRect'
 
-
-
 function App() {
   const canvas = useRef();
+  const [mousePos, setMousePos] = useState({x:0,y:0});
   const [canvasSize, setCanvasSize] = useState({ width: 800, height: 600 });
   const [selectRect, setSelectRectBegin, setSelectRectMove, setSelectRectEnd] = useSelectRect();
   const [resizeRect, setResizeRectBegin, setResizeRectMove, setResizeRectEnd] = useResizeRect();
@@ -25,11 +24,11 @@ function App() {
   const [rulehor, setRulehor] = useState([]);
   const [rulever, setRulever] = useState([]);
   useEffect(() => {
-
     console.log(`devicePixelRatio:${window.devicePixelRatio}`);
     let paint = document.getElementById("paint");
     let rules = [];
     for (let begin = 0; begin < paint.offsetWidth * window.devicePixelRatio; begin = begin + 100) {
+      //for (let begin = 0; begin < 12; begin++) {
       rules.push(begin);
     }
     setRulehor(rules);
@@ -152,6 +151,7 @@ function App() {
 
   const mouseMove = (e) => {
     //console.log(e);
+    
     let paint = document.getElementById("paint");
     if (paint === null) {
       return;
@@ -159,6 +159,9 @@ function App() {
     let rect = paint.getBoundingClientRect();
     let x = e.clientX - rect.x;
     let y = e.clientY - rect.y;
+    if(e.target === paint || e.target===canvas.current){
+      setMousePos({x:x,y:y});
+    }
     //console.log(`action:${editReizeAction.current}`);
     if (canvasResizeAction.current !== "") {
       setResizeRectMove(x, y);
@@ -218,33 +221,35 @@ function App() {
       </div>
       <div id="rowcontent" className="row content" onMouseDown={(e) => { mouseDown(e) }} onMouseMove={(e) => { mouseMove(e) }} onMouseUp={(e) => { mouseUp(e) }} onContextMenu={(e) => contextMenu(e)}>
         <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gridTemplateRows: "auto 1fr", height: "100%" }}>
-          <div style={{ width: `${17 / window.devicePixelRatio}`, height: `${17 / window.devicePixelRatio}` }}></div>
-          <div style={{ display: "flex", height: `${17 / window.devicePixelRatio}`, overflow: "hidden" }}>
-            <div style={{ width: `${5 / window.devicePixelRatio}px` }}></div>
-            {
-              rulehor.map((item, index) => {
-                return (
-                  <svg key={index} width={`${100 / window.devicePixelRatio}`} height={`${17 / window.devicePixelRatio}`}>
-                    <rect width={`${100 / window.devicePixelRatio}`} height={`${17 / window.devicePixelRatio}`} fill="rgb(241,243,248)"></rect>
-                    <line x1="0" y1="0" x2="0" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    <line x1="10" y1={`${13 / window.devicePixelRatio}`} x2="10" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    <line x1="20" y1={`${13 / window.devicePixelRatio}`} x2="20" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    <line x1="30" y1={`${13 / window.devicePixelRatio}`} x2="30" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    <line x1="40" y1={`${13 / window.devicePixelRatio}`} x2="40" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    <line x1="50" y1={`${13 / window.devicePixelRatio}`} x2="50" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    <line x1="60" y1={`${13 / window.devicePixelRatio}`} x2="60" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    <line x1="70" y1={`${13 / window.devicePixelRatio}`} x2="70" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    <line x1="80" y1={`${13 / window.devicePixelRatio}`} x2="80" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    <line x1="90" y1={`${13 / window.devicePixelRatio}`} x2="90" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    <line x1="0" y1={`${17 / window.devicePixelRatio}`} x2={`${100 / window.devicePixelRatio}`} y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    <text x="2" y="8" fill="rg(51,75,106)" fontSize="8">{item}</text>
-                  </svg>
-                )
-              })
-            }
-          </div>
-          <div style={{ display: "flex", flexFlow: "column nowrap", overflow: "visible" }}>
-            <div style={{ height: `${5 / window.devicePixelRatio}px` }}></div>
+          <div style={{ width: `${17 / window.devicePixelRatio}`, height: `${17 / window.devicePixelRatio}`,background:"rgb(241,243,248)" }}></div>
+          <div style={{position:"relative", overflowX:"scroll", display: "flex", width:`${3200/window.devicePixelRatio}px`, height: `${57 / window.devicePixelRatio}px`,flexWrap:"nowrap"}}>
+              <div style={{ width: `${5 / window.devicePixelRatio}px`,height: `${17 / window.devicePixelRatio}`,background:"rgb(241,243,248)" }}></div>
+              {
+                rulehor.map((item, index) => {
+                  return (
+                    <svg style={{flexGrow:"0"}} key={index} width={`${100 / window.devicePixelRatio}`} height={`${17 / window.devicePixelRatio}`}>
+                      <rect width={`${100 / window.devicePixelRatio}`} height={`${17 / window.devicePixelRatio}`} fill="rgb(241,243,248)"></rect>
+                      <line x1="0" y1="0" x2="0" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
+                      <line x1="10" y1={`${13 / window.devicePixelRatio}`} x2="10" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
+                      <line x1="20" y1={`${13 / window.devicePixelRatio}`} x2="20" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
+                      <line x1="30" y1={`${13 / window.devicePixelRatio}`} x2="30" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
+                      <line x1="40" y1={`${13 / window.devicePixelRatio}`} x2="40" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
+                      <line x1="50" y1={`${13 / window.devicePixelRatio}`} x2="50" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
+                      <line x1="60" y1={`${13 / window.devicePixelRatio}`} x2="60" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
+                      <line x1="70" y1={`${13 / window.devicePixelRatio}`} x2="70" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
+                      <line x1="80" y1={`${13 / window.devicePixelRatio}`} x2="80" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
+                      <line x1="90" y1={`${13 / window.devicePixelRatio}`} x2="90" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
+                      <line x1="0" y1={`${17 / window.devicePixelRatio}`} x2={`${100 / window.devicePixelRatio}`} y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
+                      <text x="2" y="8" fill="rg(51,75,106)" fontSize="8">{item}</text>
+                    </svg>
+                  )
+                })
+              }
+              <div style={{position:"absolute",left:`${mousePos.x+5}px` , width:`${1/window.devicePixelRatio}px`,height:`${17/window.devicePixelRatio}px`,background:"red"}}></div>
+            </div>
+          
+          <div style={{ position:"relative", display: "flex", flexFlow: "column nowrap", overflow: "visible" }}>
+            <div style={{ height: `${5 / window.devicePixelRatio}px`,background:"rgb(241,243,248)" }}></div>
             {
               rulever.map((item, index) => {
                 return (
@@ -266,6 +271,7 @@ function App() {
                 )
               })
             }
+            <div style={{position:"absolute",top:`${mousePos.y+5}px` , width:`${17/window.devicePixelRatio}px`,height:`${1/window.devicePixelRatio}px`,background:"red"}}></div>
           </div>
           <div id="paint" style={{ position: "relative", marginTop: `${5 / window.devicePixelRatio}px`, marginLeft: `${5 / window.devicePixelRatio}px`, overflow: "auto" }}>
             <div style={{ position: "absolute", display: "grid", gridTemplateColumns: "auto auto", gridTemplateRows: "auto auto", justifySelf: "left", alignContent: "start" }}>
