@@ -1,4 +1,4 @@
-html,
+/* html,
 body {
   height: 100%;
   margin: 0;
@@ -11,16 +11,10 @@ body {
   }
   
   .box .row {
-    /* border: 1px dotted grey; */
   }
   
   .box .row.header {
     flex: 0 1 auto;
-    /* The above is shorthand for:
-    flex-grow: 0,
-    flex-shrink: 1,
-    flex-basis: auto
-    */
   }
   
   .box .row.content {
@@ -30,7 +24,7 @@ body {
   
   .box .row.footer {
     flex: 0 1 40px;
-  }
+  } */
 
   /* div.a {
     position: relative;

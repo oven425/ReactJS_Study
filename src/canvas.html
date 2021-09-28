@@ -3,8 +3,11 @@
 
 <head>
     <title>Page Title</title>
-    <link href="ImageEdit.css" rel="stylesheet">
+    <!-- <link href="ImageEdit.css" rel="stylesheet"> -->
     <style>
+        body::-webkit-scrollbar {
+    display: none;
+}
         .content {
             flex: 1;
             display: flex;
@@ -16,139 +19,139 @@
         .box {
             flex-shrink: 0;
             width: 100px;
-            /* display: flex; */
-            /* min-height: 50; */
-            /* needs vendor prefixes */
+            height: 17px;
         }
+
+        html, body {
+            height: 100vh; margin: 0;
+        }
+
     </style>
 </head>
 
-<body style="background-color:#ccd5E4;">
-    <div style="background-color: red;">
-        <div id="content" class="content">
-            <div class="box">Column 1</div>
-            <div class="box">Column 2</div>
-            <div class="box">Column 3</div>
-            <div class="box">Column 4</div>
-            <div class="box">Column 5</div>
-            <div class="box">Column 6</div>
-            <div class="box">Column 7</div>
-            <div class="box">Column 8</div>
-            <div class="box">Column 9</div>
-            <div class="box">Column 10</div>
-            <div class="box">Column 11</div>
-            <div class="box">Column 12</div>
-            <div class="box">Column 13</div>
-            <div class="box">Column 14</div>
-            <div class="box">Column 15</div>
-            <div class="box">Column 16</div>
-            <div class="box">Column 17</div>
-            <div class="box">Column 18</div>
-            <div class="box">Column 19</div>
-            <div class="box">Column 20</div>
+<body style="background-color:#ccd5E4; margin: 0px; ">
+    <div style="display: flex; flex-direction: column; height: 100%; " >
+        <div>Ribbon</div>
+        <div style="display: grid;; grid-template-columns: auto 1fr; grid-template-rows: auto 1fr; height: 100%; flex-grow: 1;">
+            <div style="width: 17px; height: 17px; background-color: red;"></div>
+            <div style="background-color: red;">
+                <div id="content" class="content">
+                    <div class="box">Column 1</div>
+                    <div class="box">Column 2</div>
+                    <div class="box">Column 3</div>
+                    <div class="box">Column 4</div>
+                    <div class="box">Column 5</div>
+                    <div class="box">Column 6</div>
+                    <div class="box">Column 7</div>
+                    <div class="box">Column 8</div>
+                    <div class="box">Column 9</div>
+                    <div class="box">Column 10</div>
+                    <div class="box">Column 11</div>
+                    <div class="box">Column 12</div>
+                    <div class="box">Column 13</div>
+                    <div class="box">Column 14</div>
+                    <div class="box">Column 15</div>
+                    <div class="box">Column 16</div>
+                    <div class="box">Column 17</div>
+                    <div class="box">Column 18</div>
+                    <div class="box">Column 19</div>
+                    <div class="box">Column 20</div>
+                </div>
+            </div>
+            <div style="width: 17px; background-color: red;"></div>
+            <div id="paint_root" style="background-color: green;">
+                <div id="paint" style="background-color: blanchedalmond; overflow: auto; width: 1860px; height: 850px;">
+                    <div style="width: 8000px; height: 6000px; background-color: goldenrod;">1234567890</div>
+                </div>
+            </div>
+            
         </div>
-    </div>
-    <div style="width: 2000px; background-color: blanchedalmond;">
-        123
+        <div>Status</div>
     </div>
     
+    <!-- <div style="display: grid;; grid-template-columns: auto 1fr; grid-template-rows: auto 1fr;height: 100vh; width: 100vw ">
+        <div style="width: 17px; height: 17px; background-color: red;"></div>
+        <div style="height: 17px; background-color: red;"></div>
+        <div style="width: 17px; background-color: red;"></div>
+        <div style="background-color: blanchedalmond; overflow: auto;">
+            <div style="width: 8000px; height: 6000px; background-color: goldenrod;">1234567890</div>
+        </div>
+    </div> -->
 
-    <!-- <div class="box">
-            <div class="row header">
-                Ribbon
+    <!-- <div style="background-color: blanchedalmond; height: 100vh; width: 100vw; overflow: scroll;">
+        <div style="width: 8000px; height: 6000px; background-color: goldenrod;">1234567890</div>
+    </div> -->
+    
+    <!-- <div style="display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto 1fr; height: 100vh;">
+        <div style="background-color: red; height: 17px; width: 17px;"></div>
+        <div style="background-color: red;">
+            <div id="content" class="content">
+                <div class="box">Column 1</div>
+                <div class="box">Column 2</div>
+                <div class="box">Column 3</div>
+                <div class="box">Column 4</div>
+                <div class="box">Column 5</div>
+                <div class="box">Column 6</div>
+                <div class="box">Column 7</div>
+                <div class="box">Column 8</div>
+                <div class="box">Column 9</div>
+                <div class="box">Column 10</div>
+                <div class="box">Column 11</div>
+                <div class="box">Column 12</div>
+                <div class="box">Column 13</div>
+                <div class="box">Column 14</div>
+                <div class="box">Column 15</div>
+                <div class="box">Column 16</div>
+                <div class="box">Column 17</div>
+                <div class="box">Column 18</div>
+                <div class="box">Column 19</div>
+                <div class="box">Column 20</div>
             </div>
-            <div class="row content">
-                <div style="display:grid;grid-template-columns: auto 1fr;grid-template-rows:auto 1fr; height:100%; ">
-                    <div style="height: 17px;width:17px;background: #F1F3F8;">N</div>
-                    <div style="display:inline-block;height: 17px;background: #F1F3F8;">
-                        <svg width="66.66" height="17">
-                            <rect width="100" height="17" fill="rgb(241,243,248)"></rect>
-                            <line x1="0" y1="0" x2="0" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="10" y1="13" x2="10" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="20" y1="13" x2="20" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="30" y1="13" x2="30" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="40" y1="13" x2="40" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="50" y1="13" x2="50" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="60" y1="13" x2="60" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="70" y1="13" x2="70" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="80" y1="13" x2="80" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="90" y1="13" x2="90" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <text x="2" y="11" fill="rg(51,75,106)" font-size="11">0</text>
-                        </svg>
-                        <svg width="66.66" height="17">
-                            <rect width="100" height="17" fill="rgb(241,243,248)"></rect>
-                            <line x1="0" y1="0" x2="0" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="10" y1="13" x2="10" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="20" y1="13" x2="20" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="30" y1="13" x2="30" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="40" y1="13" x2="40" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="50" y1="13" x2="50" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="60" y1="13" x2="60" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="70" y1="13" x2="70" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="80" y1="13" x2="80" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="90" y1="13" x2="90" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <text x="2" y="11" fill="rg(51,75,106)" font-size="11">100</text>
-                        </svg>
-                        <svg width="66.66" height="17">
-                            <rect width="100" height="17" fill="rgb(241,243,248)"></rect>
-                            <line x1="0" y1="0" x2="0" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="10" y1="13" x2="10" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="20" y1="13" x2="20" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="30" y1="13" x2="30" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="40" y1="13" x2="40" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="50" y1="13" x2="50" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="60" y1="13" x2="60" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="70" y1="13" x2="70" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="80" y1="13" x2="80" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="90" y1="13" x2="90" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <text x="2" y="11" fill="rg(51,75,106)" font-size="11">200</text>
-                        </svg>
-                        <svg width="66.66" height="17">
-                            <rect width="100" height="17" fill="rgb(241,243,248)"></rect>
-                            <line x1="0" y1="0" x2="0" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="10" y1="13" x2="10" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="20" y1="13" x2="20" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="30" y1="13" x2="30" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="40" y1="13" x2="40" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="50" y1="13" x2="50" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="60" y1="13" x2="60" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="70" y1="13" x2="70" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="80" y1="13" x2="80" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="90" y1="13" x2="90" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <text x="2" y="11" fill="rg(51,75,106)" font-size="11">300</text>
-                        </svg>
-                        <svg width="66.66" height="17">
-                            <rect width="100" height="17" fill="rgb(241,243,248)"></rect>
-                            <line x1="0" y1="0" x2="0" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="10" y1="13" x2="10" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="20" y1="13" x2="20" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="30" y1="13" x2="30" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="40" y1="13" x2="40" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="50" y1="13" x2="50" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="60" y1="13" x2="60" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="70" y1="13" x2="70" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="80" y1="13" x2="80" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <line x1="90" y1="13" x2="90" y2="17" style="stroke:rgb(142,156,175);stroke-width:1" />
-                            <text x="2" y="11" fill="rg(51,75,106)" font-size="11">400</text>
-                        </svg>
-                    </div>
-                    <div style="height: 17px;width:17px;background: #F1F3F8;">v</div>
-                    <div style="position: relative;background: yellow; margin-top: 5px; margin-left: 5px; overflow:auto;">
-                        <div style="position:absolute; display: grid; grid-template-columns: auto auto; grid-template-rows: auto auto;justify-content: left; align-content: start;">
-                            <canvas id="canvas" width="3000" height="480"></canvas>
-                            <div style="align-self: center;grid-column: 2; background-color:white;border:black 1px solid; width:10px;height:10px;cursor: w-resize;"></div>
-                            <div style="grid-column: 2;grid-row: 2; background-color:white;border:black 1px solid; width:10px;height:10px;cursor: nw-resize"></div>
-                            <div style="justify-self: center; grid-row: 2;background-color:white;border:black 1px solid; width:10px;height:10px;cursor: n-resize"></div>
-                        </div> 
-                    </div>
-                    
+        </div>
+        <div style="width: 17px; background-color: red;"></div>
+        <div style="background-color: blanchedalmond; overflow: scroll;">
+            <div style="width: 800px; height: 6000px; background-color: goldenrod;">1234567890</div>
+        </div>
+    </div> -->
+
+    <!-- <div style="display: grid; grid-template-rows: auto 1fr auto; height: 100vh; background-color: aqua;">
+        <div>Rivvon</div>
+        <div style="display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto 1fr;">
+            <div style="background-color: red; height: 17px; width: 17px;"></div>
+            <div style="background-color: red;">
+                <div id="content" class="content">
+                    <div class="box">Column 1</div>
+                    <div class="box">Column 2</div>
+                    <div class="box">Column 3</div>
+                    <div class="box">Column 4</div>
+                    <div class="box">Column 5</div>
+                    <div class="box">Column 6</div>
+                    <div class="box">Column 7</div>
+                    <div class="box">Column 8</div>
+                    <div class="box">Column 9</div>
+                    <div class="box">Column 10</div>
+                    <div class="box">Column 11</div>
+                    <div class="box">Column 12</div>
+                    <div class="box">Column 13</div>
+                    <div class="box">Column 14</div>
+                    <div class="box">Column 15</div>
+                    <div class="box">Column 16</div>
+                    <div class="box">Column 17</div>
+                    <div class="box">Column 18</div>
+                    <div class="box">Column 19</div>
+                    <div class="box">Column 20</div>
                 </div>
-                
             </div>
-            <div class="row footer">
-                Status bar
+            <div style="width: 17px; background-color: red;"></div>
+            <div style="background-color: blanchedalmond; overflow: auto;">
+                <div style="width: 800px; height: 600px; background-color: goldenrod;">1234567890</div>
             </div>
-        </div> -->
+        </div>
+        <div>Status</div>
+    </div> -->
+    
+    
+
 
 </body>
 <script type=text/javascript>

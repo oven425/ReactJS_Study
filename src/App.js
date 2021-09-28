@@ -11,11 +11,12 @@ import { useRect } from './useRect'
 import { useSelectRect } from './useSelectRect'
 import { useResizeRect, ResizeTypes } from "./useResizeRect";
 import { useEditRect } from './useEditRect'
+import { useWindowSize } from './useWindowSize'
 
 function App() {
   const canvas = useRef();
-  const [mousePos, setMousePos] = useState({x:0,y:0});
-  const [canvasSize, setCanvasSize] = useState({ width: 4000/ window.devicePixelRatio, height: 600/ window.devicePixelRatio });
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [canvasSize, setCanvasSize] = useState({ width: 4000 / window.devicePixelRatio, height: 600 / window.devicePixelRatio });
   const [selectRect, setSelectRectBegin, setSelectRectMove, setSelectRectEnd] = useSelectRect();
   const [resizeRect, setResizeRectBegin, setResizeRectMove, setResizeRectEnd] = useResizeRect();
   const [editRect, showEditRect, hideEditRect, dragEditRectBegin, dragEditRectMove, dragEditRectEnd] = useEditRect();
@@ -23,27 +24,34 @@ function App() {
   const canvasResizeAction = useRef("");
   const [rulehor, setRulehor] = useState([]);
   const [rulever, setRulever] = useState([]);
+  const windowSize = useWindowSize();
+
   useEffect(() => {
     console.log(`devicePixelRatio:${window.devicePixelRatio}`);
+    let paint_root = document.getElementById("paint_root");
     let paint = document.getElementById("paint");
+    let root_rect = paint_root.getBoundingClientRect();
+    console.log(`panit_root w:${root_rect.width} h:${root_rect.height}`);
+    // paint.style.width = `${root_rect.width-14}px`;
+    // paint.style.height = `${root_rect.height-10}px`;
     let rules = [];
-    console.log(`offsetWidth:${paint.offsetWidth} canvasWidth:${canvas.current.width}`);
-    let maxw = paint.offsetWidth>canvas.current.width?paint.offsetWidth:canvas.current.width;
+    //console.log(`offsetWidth:${paint.offsetWidth} canvasWidth:${canvas.current.width}`);
+    let maxw = paint.offsetWidth > canvas.current.width ? paint.offsetWidth : canvas.current.width;
     for (let begin = 0; begin < maxw * window.devicePixelRatio; begin = begin + 100) {
       //for (let begin = 0; begin < 12; begin++) {
       rules.push(begin);
     }
     setRulehor(rules);
-    
+    let maxh = paint.offsetHeight > canvas.current.height ? paint.offsetHeight : canvas.current.height;
     rules = [];
-    for (let begin = 0; begin < paint.offsetHeight * window.devicePixelRatio; begin = begin + 100) {
+    for (let begin = 0; begin < maxh * window.devicePixelRatio; begin = begin + 100) {
       rules.push(begin);
     }
     setRulever(rules);
     console.log(`offsetWidth:${paint.offsetWidth * window.devicePixelRatio}  offsetHeight:${paint.offsetHeight * window.devicePixelRatio}`);
 
 
-    var scale = window.devicePixelRatio; 
+    var scale = window.devicePixelRatio;
     var ctx = canvas.current.getContext("2d");
     ctx.scale(scale, scale);
     console.log(`width:${canvas.current.width}  height:${canvas.current.height}`);
@@ -77,10 +85,10 @@ function App() {
     }
     ctx.stroke();
 
-  }, [canvasSize])
+  }, [canvasSize, windowSize])
 
   const mouseDown = (e, action) => {
-    //console.log(e.target.id);
+    console.log(e);
     //console.log(`action:${action}`);
     let paint = document.getElementById("paint");
     //console.log(`paint offsetWidth:${paint.offsetWidth} offsetLeft:${paint.offsetLeft}`);
@@ -94,10 +102,10 @@ function App() {
     let rect = paint.getBoundingClientRect();
     let x = e.clientX - rect.x;
     let y = e.clientY - rect.y;
-    
+
 
     if (canvasResizeAction.current === "")
-    
+
       switch (e.target.id) {
         case "canvas_track_right":
         case "canvas_track_right_bottom":
@@ -107,9 +115,9 @@ function App() {
           setResizeRectBegin(action, 0, 0, canvasSize.width, canvasSize.height);
           break;
         default: break;
-        
+
       }
-      
+
     if (editRect.show === true && editReizeAction.current === "") {
       switch (e.target.id) {
         case "edit_track_drag":
@@ -131,12 +139,12 @@ function App() {
           editReizeAction.current = "";
           break;
       }
-      
+
     }
 
     if (x < canvasSize.width && y < canvasSize.height && editReizeAction.current === "") {
       hideEditRect();
-      if(canvasResizeAction.current===""){
+      if (canvasResizeAction.current === "") {
         let limit = { x: 0, y: 0, width: 0, height: 0 };
         limit.x = parseInt(paint.style.left);
         limit.y = parseInt(paint.style.top);
@@ -145,15 +153,15 @@ function App() {
         setSelectRectBegin(x, y, 0, 0, limit);
 
       }
-      
+
     }
-    
+
     e.cancelBubble = true;
   }
 
   const mouseMove = (e) => {
     //console.log(e);
-    
+
     let paint = document.getElementById("paint");
     if (paint === null) {
       return;
@@ -161,8 +169,8 @@ function App() {
     let rect = paint.getBoundingClientRect();
     let x = e.clientX - rect.x;
     let y = e.clientY - rect.y;
-    if(e.target === paint || e.target===canvas.current){
-      setMousePos({x:x,y:y});
+    if (e.target === paint || e.target === canvas.current) {
+      setMousePos({ x: x, y: y });
     }
     //console.log(`action:${editReizeAction.current}`);
     if (canvasResizeAction.current !== "") {
@@ -216,96 +224,71 @@ function App() {
     e.preventDefault();
   }
 
-  const paintScroll=(e)=>{
-    console.log(`paintScroll:${e.target.scrollLeft}`);
+  const paintScroll = (e) => {
+    //console.log(`paintScroll:${e.target.scrollLeft}`);
     document.getElementById("rule_hor").scrollLeft = e.target.scrollLeft;
   }
 
   return (
-    <div className="box">
-      <div className="row header">
+    <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+      <div>
         Ribbon
       </div>
-      <div id="rowcontent" className="row content" onMouseDown={(e) => { mouseDown(e) }} onMouseMove={(e) => { mouseMove(e) }} onMouseUp={(e) => { mouseUp(e) }} onContextMenu={(e) => contextMenu(e)}>
+      <div id="rowcontent" style={{ flexGrow: "1", height: "100%" }} onMouseDown={(e) => { mouseDown(e) }} onMouseMove={(e) => { mouseMove(e) }} onMouseUp={(e) => { mouseUp(e) }} onContextMenu={(e) => contextMenu(e)}>
+
         <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gridTemplateRows: "auto 1fr", height: "100%" }}>
-          <div style={{ width: `${17 / window.devicePixelRatio}`, height: `${17 / window.devicePixelRatio}`,background:"rgb(241,243,248)" }}></div>
-          <div id="rule_hor" style={{position:"relative", display: "flex",flexDirection:"row",overflow:"hidden"}}>
-              <div style={{ width: `${5 / window.devicePixelRatio}px`,height: `${17 / window.devicePixelRatio}`,background:"rgb(241,243,248)" }}></div>
-              {
-                rulehor.map((item, index) => {
-                  return (
-                    // <svg style={{flexGrow:"0"}} key={index} width={`${100 / window.devicePixelRatio}`} height={`${17 / window.devicePixelRatio}`}>
-                    //   <rect width={`${100 / window.devicePixelRatio}`} height={`${17 / window.devicePixelRatio}`} fill="rgb(241,243,248)"></rect>
-                    //   <line x1="0" y1="0" x2="0" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    //   <line x1="10" y1={`${13 / window.devicePixelRatio}`} x2="10" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    //   <line x1="20" y1={`${13 / window.devicePixelRatio}`} x2="20" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    //   <line x1="30" y1={`${13 / window.devicePixelRatio}`} x2="30" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    //   <line x1="40" y1={`${13 / window.devicePixelRatio}`} x2="40" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    //   <line x1="50" y1={`${13 / window.devicePixelRatio}`} x2="50" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    //   <line x1="60" y1={`${13 / window.devicePixelRatio}`} x2="60" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    //   <line x1="70" y1={`${13 / window.devicePixelRatio}`} x2="70" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    //   <line x1="80" y1={`${13 / window.devicePixelRatio}`} x2="80" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    //   <line x1="90" y1={`${13 / window.devicePixelRatio}`} x2="90" y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    //   <line x1="0" y1={`${17 / window.devicePixelRatio}`} x2={`${100 / window.devicePixelRatio}`} y2={`${17 / window.devicePixelRatio}`} style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    //   <text x="2" y="8" fill="rg(51,75,106)" fontSize="8">{item}</text>
-                    // </svg>
-                    <div style={{flexShrink:"0", width:`${100 / window.devicePixelRatio}px`,height:`${17 / window.devicePixelRatio}`, backgroundColor:"green"}} key={index}>{item}</div>
-                  )
-                })
-              }
-              <div style={{position:"absolute",left:`${mousePos.x+5}px` , width:`${1/window.devicePixelRatio}px`,height:`${17/window.devicePixelRatio}px`,background:"red"}}></div>
-            </div>
-          
-          <div style={{ position:"relative", display: "flex", flexFlow: "column nowrap", overflow: "visible" }}>
-            <div style={{ height: `${5 / window.devicePixelRatio}px`,background:"rgb(241,243,248)" }}></div>
+          <div style={{ width: `${17 / window.devicePixelRatio}`, height: `${17 / window.devicePixelRatio}`, background: "rgb(241,243,248)" }}></div>
+          <div id="rule_hor" style={{ position: "relative", display: "flex", flexDirection: "row", overflow: "hidden" }}>
+            <div style={{ width: `${5 / window.devicePixelRatio}px`, height: `${17 / window.devicePixelRatio}`, background: "rgb(241,243,248)" }}></div>
             {
-              rulever.map((item, index) => {
+              rulehor.map((item, index) => {
                 return (
-                  <svg key={index} width={`${17 / window.devicePixelRatio}`} height={`${100 / window.devicePixelRatio}`}>
-                    <rect width={`${17 / window.devicePixelRatio}`} height={`${100 / window.devicePixelRatio}`} fill="rgb(241,243,248)"></rect>
-                    <line x1="0" y1="0" x2={`${17 / window.devicePixelRatio}`} y2="0" style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    <line x1={`${12 / window.devicePixelRatio}`} y1="10" x2={`${17 / window.devicePixelRatio}`} y2="10" style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    <line x1={`${12 / window.devicePixelRatio}`} y1="20" x2={`${17 / window.devicePixelRatio}`} y2="20" style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    <line x1={`${12 / window.devicePixelRatio}`} y1="30" x2={`${17 / window.devicePixelRatio}`} y2="30" style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    <line x1={`${12 / window.devicePixelRatio}`} y1="40" x2={`${17 / window.devicePixelRatio}`} y2="40" style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    <line x1={`${12 / window.devicePixelRatio}`} y1="50" x2={`${17 / window.devicePixelRatio}`} y2="50" style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    <line x1={`${12 / window.devicePixelRatio}`} y1="60" x2={`${17 / window.devicePixelRatio}`} y2="60" style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    <line x1={`${12 / window.devicePixelRatio}`} y1="70" x2={`${17 / window.devicePixelRatio}`} y2="70" style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    <line x1={`${12 / window.devicePixelRatio}`} y1="80" x2={`${17 / window.devicePixelRatio}`} y2="80" style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    <line x1={`${12 / window.devicePixelRatio}`} y1="90" x2={`${17 / window.devicePixelRatio}`} y2="90" style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    <line x1={`${17 / window.devicePixelRatio}`} y1="0" x2={`${17 / window.devicePixelRatio}`} y2="100" style={{ stroke: "rgb(142,156,175)", strokeWidth: "1" }} />
-                    <text x="2" y="10" fill="rg(51,75,106)" fontSize="8" transform="rotate(90 10,-5)">{item}</text>
-                  </svg>
+                  <div style={{ flexShrink: "0", width: `${100 / window.devicePixelRatio}px`, height: `${17 / window.devicePixelRatio}`, backgroundColor: "green" }} key={index}>{item}</div>
                 )
               })
             }
-            <div style={{position:"absolute",top:`${mousePos.y+5}px` , width:`${17/window.devicePixelRatio}px`,height:`${1/window.devicePixelRatio}px`,background:"red"}}></div>
+            <div style={{ position: "absolute", left: `${mousePos.x + 5}px`, width: `${1 / window.devicePixelRatio}px`, height: `${17 / window.devicePixelRatio}px`, background: "red" }}></div>
           </div>
-          <div id="paint" onScroll={(e)=>paintScroll(e)} style={{ position: "relative", marginTop: `${5 / window.devicePixelRatio}px`, marginLeft: `${5 / window.devicePixelRatio}px`, overflow: "auto" }}>
-            <div style={{ position: "absolute", display: "grid", gridTemplateColumns: "auto auto", gridTemplateRows: "auto auto", justifySelf: "left", alignContent: "start" }}>
-              <canvas ref={canvas} width={`${canvasSize.width}px`} height={`${canvasSize.height}px`}></canvas>
-              <div id="canvas_track_right" onMouseDown={(e) => mouseDown(e, ResizeTypes.right)} style={{ display: `${selectRect.show || editRect.show ? "none" : "block"}`, gridColumn: "2", alignSelf: "center", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "w-resize" }}></div>
-              <div id="canvas_track_right_bottom" onMouseDown={(e) => mouseDown(e, ResizeTypes.right_bottom)} style={{ display: `${selectRect.show || editRect.show ? "none" : "block"}`, gridColumn: "2", gridRow: "2", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "nw-resize" }}></div>
-              <div id="canvas_track_bottom" onMouseDown={(e) => mouseDown(e, ResizeTypes.bottom)} style={{ display: `${selectRect.show || editRect.show ? "none" : "block"}`, gridRow: "2", justifySelf: "center", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "n-resize" }}></div>
-            </div>
-            <div id="select" style={{ left: `${selectRect.x}px`, top: `${selectRect.y}px`, width: `${selectRect.width}px`, height: `${selectRect.height}px`, display: `${selectRect.show ? "block" : "none"}`, border: "1px solid black", borderStyle: "dashed", position: "absolute" }} ></div>
-            <div id="edit_track" style={{ border: "1px solid #0078D7", borderStyle: "dashed", position: "absolute", left: `${editRect.x}px`, top: `${editRect.y}px`, height: `${editRect.height}px`, width: `${editRect.width}px`, display: `${editRect.show ? "grid" : "none"}`, gridTemplateColumns: "1fr 1fr 1fr", gridTemplateRows: "1fr 1fr 1fr" }}>
-              <div id="edit_track_drag" onMouseDown={(e) => mouseDown(e, "drag")} style={{ gridColumn: "1 / 4", gridRow: "1 / 4", cursor: "move" }}></div>
-              <div id="edit_track_left_top" onMouseDown={(e) => mouseDown(e, ResizeTypes.left_top)} style={{ gridColumn: "1", gridRow: "1", alignSelf: "start", justifySelf: "start", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "nw-resize", marginLeft: "-5px", marginTop: "-5px" }}></div>
-              <div id="edit_track_top" onMouseDown={(e) => mouseDown(e, ResizeTypes.top)} style={{ gridColumn: "2", gridRow: "1", alignSelf: "start", justifySelf: "center", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "n-resize", marginTop: "-5px" }}></div>
-              <div id="edit_track_top_right" onMouseDown={(e) => mouseDown(e, ResizeTypes.top_right)} style={{ gridColumn: "3", gridRow: "1", alignSelf: "start", justifySelf: "end", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "sw-resize", marginTop: "-5px", marginRight: "-5px" }}></div>
-              <div id="edit_track_left" onMouseDown={(e) => mouseDown(e, ResizeTypes.left)} style={{ gridColumn: "1", gridRow: "2", alignSelf: "center", justifySelf: "start", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "w-resize", marginLeft: "-5px" }}></div>
-              <div id="edit_track_right" onMouseDown={(e) => mouseDown(e, ResizeTypes.right)} style={{ gridColumn: "3", gridRow: "2", alignSelf: "center", justifySelf: "end", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "w-resize", marginRight: "-5px" }}></div>
-              <div id="edit_track_left_bottom" onMouseDown={(e) => mouseDown(e, ResizeTypes.left_bottom)} style={{ gridColumn: "1", gridRow: "3", alignSelf: "end", justifySelf: "start", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "sw-resize", marginLeft: "-5px", marginBottom: "-5px" }}></div>
-              <div id="edit_track_bottom" onMouseDown={(e) => mouseDown(e, ResizeTypes.bottom)} style={{ gridColumn: "2", gridRow: "3", alignSelf: "end", justifySelf: "center", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "n-resize", marginBottom: "-5px" }}></div>
-              <div id="edit_track_right_bottom" onMouseDown={(e) => mouseDown(e, ResizeTypes.right_bottom)} style={{ gridColumn: "3", gridRow: "3", alignSelf: "end", justifySelf: "end", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "nw-resize", marginRight: "-5px", marginBottom: "-5px" }}></div>
-            </div>
-            <div style={{ left: `${resizeRect.x}px`, top: `${resizeRect.y}px`, width: `${resizeRect.width}px`, height: `${resizeRect.height}px`, display: `${resizeRect.show ? "block" : "none"}`, cursor: `${resizeRect.cursor}`, border: "1px solid black", borderStyle: "dashed", position: "absolute" }}></div>
+
+          <div style={{ position: "relative", display: "flex", flexFlow: "column", overflow: "hidden" }}>
+            <div style={{ height: `${5 / window.devicePixelRatio}px`, background: "rgb(241,243,248)" }}></div>
+            {
+              rulever.map((item, index) => {
+                return (
+                  <div style={{ flexShrink: "0", height: `${100 / window.devicePixelRatio}px`, width: `${17 / window.devicePixelRatio}`, backgroundColor: "green" }} key={index}>{item}</div>
+                )
+              })
+            }
+            <div style={{ position: "absolute", top: `${mousePos.y + 5}px`, width: `${17 / window.devicePixelRatio}px`, height: `${1 / window.devicePixelRatio}px`, background: "red" }}></div>
           </div>
+          <div id="paint_root" style={{background:"pink"}}>
+            <div id="paint" onScroll={(e) => paintScroll(e)} style={{ width: "800px", height: "600px", position: "relative", marginTop: `${5 / window.devicePixelRatio}px`, marginLeft: `${5 / window.devicePixelRatio}px`, overflow: "auto" }}>
+              <div style={{ position: "absolute", display: "grid", gridTemplateColumns: "auto auto", gridTemplateRows: "auto auto", justifySelf: "left", alignContent: "start" }}>
+                <canvas ref={canvas} width={`${canvasSize.width}px`} height={`${canvasSize.height}px`}></canvas>
+                <div id="canvas_track_right" onMouseDown={(e) => mouseDown(e, ResizeTypes.right)} style={{ display: `${selectRect.show || editRect.show ? "none" : "block"}`, gridColumn: "2", alignSelf: "center", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "w-resize" }}></div>
+                <div id="canvas_track_right_bottom" onMouseDown={(e) => mouseDown(e, ResizeTypes.right_bottom)} style={{ display: `${selectRect.show || editRect.show ? "none" : "block"}`, gridColumn: "2", gridRow: "2", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "nw-resize" }}></div>
+                <div id="canvas_track_bottom" onMouseDown={(e) => mouseDown(e, ResizeTypes.bottom)} style={{ display: `${selectRect.show || editRect.show ? "none" : "block"}`, gridRow: "2", justifySelf: "center", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "n-resize" }}></div>
+              </div>
+              <div id="select" style={{ left: `${selectRect.x}px`, top: `${selectRect.y}px`, width: `${selectRect.width}px`, height: `${selectRect.height}px`, display: `${selectRect.show ? "block" : "none"}`, border: "1px solid black", borderStyle: "dashed", position: "absolute" }} ></div>
+              <div id="edit_track" style={{ border: "1px solid #0078D7", borderStyle: "dashed", position: "absolute", left: `${editRect.x}px`, top: `${editRect.y}px`, height: `${editRect.height}px`, width: `${editRect.width}px`, display: `${editRect.show ? "grid" : "none"}`, gridTemplateColumns: "1fr 1fr 1fr", gridTemplateRows: "1fr 1fr 1fr" }}>
+                <div id="edit_track_drag" onMouseDown={(e) => mouseDown(e, "drag")} style={{ gridColumn: "1 / 4", gridRow: "1 / 4", cursor: "move" }}></div>
+                <div id="edit_track_left_top" onMouseDown={(e) => mouseDown(e, ResizeTypes.left_top)} style={{ gridColumn: "1", gridRow: "1", alignSelf: "start", justifySelf: "start", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "nw-resize", marginLeft: "-5px", marginTop: "-5px" }}></div>
+                <div id="edit_track_top" onMouseDown={(e) => mouseDown(e, ResizeTypes.top)} style={{ gridColumn: "2", gridRow: "1", alignSelf: "start", justifySelf: "center", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "n-resize", marginTop: "-5px" }}></div>
+                <div id="edit_track_top_right" onMouseDown={(e) => mouseDown(e, ResizeTypes.top_right)} style={{ gridColumn: "3", gridRow: "1", alignSelf: "start", justifySelf: "end", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "sw-resize", marginTop: "-5px", marginRight: "-5px" }}></div>
+                <div id="edit_track_left" onMouseDown={(e) => mouseDown(e, ResizeTypes.left)} style={{ gridColumn: "1", gridRow: "2", alignSelf: "center", justifySelf: "start", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "w-resize", marginLeft: "-5px" }}></div>
+                <div id="edit_track_right" onMouseDown={(e) => mouseDown(e, ResizeTypes.right)} style={{ gridColumn: "3", gridRow: "2", alignSelf: "center", justifySelf: "end", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "w-resize", marginRight: "-5px" }}></div>
+                <div id="edit_track_left_bottom" onMouseDown={(e) => mouseDown(e, ResizeTypes.left_bottom)} style={{ gridColumn: "1", gridRow: "3", alignSelf: "end", justifySelf: "start", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "sw-resize", marginLeft: "-5px", marginBottom: "-5px" }}></div>
+                <div id="edit_track_bottom" onMouseDown={(e) => mouseDown(e, ResizeTypes.bottom)} style={{ gridColumn: "2", gridRow: "3", alignSelf: "end", justifySelf: "center", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "n-resize", marginBottom: "-5px" }}></div>
+                <div id="edit_track_right_bottom" onMouseDown={(e) => mouseDown(e, ResizeTypes.right_bottom)} style={{ gridColumn: "3", gridRow: "3", alignSelf: "end", justifySelf: "end", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "nw-resize", marginRight: "-5px", marginBottom: "-5px" }}></div>
+              </div>
+              <div style={{ left: `${resizeRect.x}px`, top: `${resizeRect.y}px`, width: `${resizeRect.width}px`, height: `${resizeRect.height}px`, display: `${resizeRect.show ? "block" : "none"}`, cursor: `${resizeRect.cursor}`, border: "1px solid black", borderStyle: "dashed", position: "absolute" }}></div>
+            </div>
+          </div>
+
         </div>
 
       </div>
-      <div className="row footer">
+      <div style={{ border: "1px dashed  green" }}>
         status bar
       </div>
     </div>
