@@ -246,7 +246,7 @@ function App() {
             {
               rulehor.map((item, index) => {
                 return (
-                  <div style={{ flexShrink: "0", width: `${100 / window.devicePixelRatio}px`, height: `${17 / window.devicePixelRatio}px`, border: "1px green solid" }} key={index}>{item}</div>
+                  <div style={{background:"url(rule_hor.svg)", flexShrink: "0", width: `${100 / window.devicePixelRatio}px`, height: `${17 / window.devicePixelRatio}px`, border: "1px green solid" }} key={index}>{item}</div>
                 )
               })
             }
