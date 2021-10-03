@@ -12,6 +12,9 @@ import { useSelectRect } from './useSelectRect'
 import { useResizeRect, ResizeTypes } from "./useResizeRect";
 import { useEditRect } from './useEditRect'
 import { useWindowSize } from './useWindowSize'
+import ruleshor from './svg/rule_hor.svg'
+import rulesver from './svg/rule_ver.svg'
+import statusbar_pos from './svg/statusbar_pos.svg'
 
 function App() {
   const canvas = useRef();
@@ -43,12 +46,12 @@ function App() {
     setRulehor(rules);
     let maxh = paint.offsetHeight > canvas.current.height ? paint.offsetHeight : canvas.current.height;
     rules = [];
-    // for (let begin = 0; begin < maxh * window.devicePixelRatio; begin = begin + 100) {
-    //   rules.push(begin);
-    // }
-    for (let begin = 0; begin < 15; begin = begin + 1) {
+    for (let begin = 0; begin < maxh * window.devicePixelRatio; begin = begin + 100) {
       rules.push(begin);
     }
+    // for (let begin = 0; begin < 15; begin = begin + 1) {
+    //   rules.push(begin);
+    // }
     setRulever(rules);
     console.log(`offsetWidth:${paint.offsetWidth * window.devicePixelRatio}  offsetHeight:${paint.offsetHeight * window.devicePixelRatio}`);
 
@@ -228,17 +231,20 @@ function App() {
   }
 
   const paintScroll = (e) => {
-    console.log(`paintScroll: scrollLeft:${e.target.scrollLeft} scrollTop:${e.target.scrollTop}`);
     document.getElementById("rule_hor").scrollLeft = e.target.scrollLeft;
+    document.getElementById("rule_ver").scrollTop = e.target.scrollTop;
+  }
+
+  const dropFile =(e)=>{
+    console.log(e);
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+    <div style={{ display: "flex", flexDirection: "column", height: "100%" }} draggable="true" onDrop={(e)=>dropFile(e)}>
       <div>
         Ribbon
       </div>
-      <div id="rowcontent" style={{ flexGrow: "1", height: "80%" }} onMouseDown={(e) => { mouseDown(e) }} onMouseMove={(e) => { mouseMove(e) }} onMouseUp={(e) => { mouseUp(e) }} onContextMenu={(e) => contextMenu(e)}>
-
+      <div id="rowcontent" style={{ flexGrow: "1", height: "99%" }} onMouseDown={(e) => { mouseDown(e) }} onMouseMove={(e) => { mouseMove(e) }} onMouseUp={(e) => { mouseUp(e) }} onContextMenu={(e) => contextMenu(e)}>
         <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gridTemplateRows: "auto 1fr", height: "100%" }}>
           <div style={{ width: `${17 / window.devicePixelRatio}`, height: `${17 / window.devicePixelRatio}`, background: "rgb(241,243,248)" }}></div>
           <div id="rule_hor" style={{ position: "relative", display: "flex", flexDirection: "row", overflow: "hidden" }}>
@@ -246,26 +252,27 @@ function App() {
             {
               rulehor.map((item, index) => {
                 return (
-                  <div style={{background:"url(rule_hor.svg)", flexShrink: "0", width: `${100 / window.devicePixelRatio}px`, height: `${17 / window.devicePixelRatio}px`, border: "1px green solid" }} key={index}>{item}</div>
+                  <div style={{fontSize:"6px", background:`url(${ruleshor})`, flexShrink: "0", width: `${100 / window.devicePixelRatio}px`, height: `${17 / window.devicePixelRatio}px`}} key={index}>
+                    {item}
+                    </div>
                 )
               })
             }
             <div style={{ position: "absolute", left: `${mousePos.x + 5}px`, width: `${1 / window.devicePixelRatio}px`, height: `${17 / window.devicePixelRatio}px`, background: "red" }}></div>
           </div>
-          <div style={{alignSelf: "stretch", justifySelf:"stretch", overflow: "hidden" }}>
-          <div style={{ position: "relative"}}>
+          <div id="rule_ver" style={{alignSelf: "stretch", justifySelf:"stretch", overflow: "hidden",position: "relative" }}>
             <div style={{ flexShrink: "0",height: `${5 / window.devicePixelRatio}px`, background: "rgb(241,243,248)" }}></div>
             {
               rulever.map((item, index) => {
                 return (
-                  <div style={{ height: `${100 / window.devicePixelRatio}px`, width: `${17 / window.devicePixelRatio}px`, border: "1px green solid" }} key={index}>
-                    {item}
+                  <div style={{background:`url(${rulesver})`, height: `${100 / window.devicePixelRatio}px`, width: `${17 / window.devicePixelRatio}px`}} key={index}>
+                    <div style={{height:`${1 / window.devicePixelRatio}px`}}></div>
+                    <div style={{ writingMode:"vertical-rl", fontSize:"10px", transform:"rotate(180deg)"}}>{item}</div>
                   </div>
                 )
               })
             }
             <div style={{ position: "absolute", top: `${mousePos.y + 5}px`, width: `${17 / window.devicePixelRatio}px`, height: `${1 / window.devicePixelRatio}px`, background: "red" }}></div>
-          </div>
           </div>
           
           <div id="paint" onScroll={(e) => paintScroll(e)} style={{ alignSelf: "stretch", justifySelf:"stretch", position: "relative", marginTop: `${5 / window.devicePixelRatio}px`, marginLeft: `${5 / window.devicePixelRatio}px`, overflow: "auto" }}>
@@ -293,8 +300,11 @@ function App() {
         </div>
 
       </div>
-      <div style={{ border: "1px dashed  green" }}>
-        status bar
+      <div style={{borderTop:"1px solid rgb(215,215,215)" ,background:"rgb(240,240,240)", height:"25px" }}>
+        <div style={{display:"flex", alignItems:"center"}}>
+            <div style={{background:`url(${statusbar_pos})`, backgroundSize:"contain", width:"20px" ,height:"20px"}}></div>
+            <div style={{fontSize:"12px"}}>{`${mousePos.x}, ${mousePos.y} pixel`}</div>
+        </div>
       </div>
     </div>
   )
