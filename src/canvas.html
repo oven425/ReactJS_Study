@@ -7,14 +7,74 @@
     </style>
 </head>
 
-<body ondrop="drop()">
-    
+<style>
+    #drop_zone {
+        border: 5px solid blue;
+        width: 200px;
+        height: 100px;
+    }
+</style>
 
+<img>
+    <div id="drop_zone" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+        <p>Drag one or more files to this Drop Zone ...</p>
+    </div>
+    <img id="img" style="width: 640ox;height: 480px;" title="drop img"></img>
+    <canvas id="canvas" width="640" height="480"></canvas>
 </body>
 <script type=text/javascript>
-    function  drop() {
-        console.log("drop");
+    function dropHandler(ev) {
+  console.log('File(s) dropped');
+
+  // Prevent default behavior (Prevent file from being opened)
+  ev.preventDefault();
+
+  if (ev.dataTransfer.items) {
+    // Use DataTransferItemList interface to access the file(s)
+    for (var i = 0; i < ev.dataTransfer.items.length; i++) {
+      // If dropped items aren't files, reject them
+      if (ev.dataTransfer.items[i].kind === 'file') {
+        var file = ev.dataTransfer.items[i].getAsFile();
+        console.log('... file[' + i + '].name = ' + file.name);
+        console.log(file);
+        var reader = new FileReader();
+    reader.onload = function (event) {
+        //console.log(event);
+        let img = document.getElementById("img");
+        //let img = document.getElementById(id)
+        console.log(img);
+        img.src = event.target.result;
+        img.onload=function (params) {
+            console.log(params);
+            let canvas = document.getElementById("canvas");
+        ctx = canvas.getContext('2d');
+        ctx.drawImage(img,0,0);
+        }
+        
+        
     }
+
+   // var file = e.dataTransfer.files[0];
+    // can get the name of the file with file.name
+    console.log(file.name);
+    reader.readAsDataURL(file);
+
+      }
+    }
+  } else {
+    // Use DataTransfer interface to access the file(s)
+    for (var i = 0; i < ev.dataTransfer.files.length; i++) {
+      console.log('... file[' + i + '].name = ' + ev.dataTransfer.files[i].name);
+    }
+  }
+}
+
+function dragOverHandler(ev) {
+  console.log('File(s) in drop zone');
+
+  // Prevent default behavior (Prevent file from being opened)
+  ev.preventDefault();
+}
 </script>
 
 </html>
