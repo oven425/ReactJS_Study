@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" href="normalize.css">
+<style>
+    body {
+        overflow: hidden;
+    }
+
+    .container {
+        height: 100vh;
+        width: 100vw;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
+    }
+
+    .header {
+        border-bottom: 1px solid lightgrey;
+    }
+
+    .sidebar {
+        border-right: 1px solid lightgrey;
+    }
+
+    .footer {
+        border-top: 1px solid lightgrey;
+    }
+
+    .body {
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+        overflow: hidden;
+    }
+
+    .content {
+        /* overflow-y: scroll; */
+        overflow: auto;
+        /* padding: 20px; */
+    }
+
+    p {
+        max-width: 600px;
+    }
+
+    .imageedit{
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-template-rows: auto auto;
+        justify-self: left;
+        align-content: start;
+    }
+    .imageedit_resize_w{
+        grid-column: 2;
+        align-self: center;
+        border: 1px solid black;
+        background-color: white;
+        width: 10px;
+        height: 10px;
+        cursor: w-resize;
+    }
+</style>
+
+<body style="overflow: hidden;">
+    <div class="container">
+        <div class="header">.header</div>
+        <div class="body">
+          <div class="sidebar">.sidebar</div>
+          <div class="content">
+            <!-- <div style={{ position: "absolute", display: "grid", gridTemplateColumns: "auto auto", gridTemplateRows: "auto auto", justifySelf: "left", alignContent: "start" }}>
+                <canvas ref={canvas} width={`${canvasSize.width}px`} height={`${canvasSize.height}px`}></canvas>
+                <div id="canvas_track_right" onMouseDown={(e) => mouseDown(e, ResizeTypes.right)} style={{ display: `${selectRect.show || editRect.show ? "none" : "block"}`, gridColumn: "2", alignSelf: "center", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "w-resize" }}></div>
+                <div id="canvas_track_right_bottom" onMouseDown={(e) => mouseDown(e, ResizeTypes.right_bottom)} style={{ display: `${selectRect.show || editRect.show ? "none" : "block"}`, gridColumn: "2", gridRow: "2", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "nw-resize" }}></div>
+                <div id="canvas_track_bottom" onMouseDown={(e) => mouseDown(e, ResizeTypes.bottom)} style={{ display: `${selectRect.show || editRect.show ? "none" : "block"}`, gridRow: "2", justifySelf: "center", border: "1px solid black", background: "white", width: "10px", height: "10px", cursor: "n-resize" }}></div>
+              </div> -->
+              <div class="imageedit">
+                <div style="width: 800px; height: 600px; background-color: blanchedalmond;">AAAAAAAAAAAAAAAAAAA</div>
+                <div class="imageedit_resize_w"></div>
+              </div>
+              <!-- <div style="width: 8000px; height: 5000px; background-color: blanchedalmond;">AAAAAAAAAAAAAAAAAAA</div> -->
+            
+          </div>
+        </div>
+        <div class="footer">.footer</div>
+      </div>
+</body>
+
+</html>

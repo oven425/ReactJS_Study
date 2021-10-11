@@ -244,7 +244,7 @@ function App() {
       <div>
         Ribbon
       </div>
-      <div id="rowcontent" style={{ flexGrow: "1", height: "99%" }} onMouseDown={(e) => { mouseDown(e) }} onMouseMove={(e) => { mouseMove(e) }} onMouseUp={(e) => { mouseUp(e) }} onContextMenu={(e) => contextMenu(e)}>
+      <div id="rowcontent" style={{ flexGrow: "1", height: "88%" }} onMouseDown={(e) => { mouseDown(e) }} onMouseMove={(e) => { mouseMove(e) }} onMouseUp={(e) => { mouseUp(e) }} onContextMenu={(e) => contextMenu(e)}>
         <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", gridTemplateRows: "auto 1fr", height: "100%" }}>
           <div style={{ width: `${17 / window.devicePixelRatio}`, height: `${17 / window.devicePixelRatio}`, background: "rgb(241,243,248)" }}></div>
           <div id="rule_hor" style={{ position: "relative", display: "flex", flexDirection: "row", overflow: "hidden" }}>
