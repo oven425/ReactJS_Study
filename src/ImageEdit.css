@@ -35,3 +35,15 @@
   cursor: nw-resize;
   justify-self: center;
 }
+.canvas_rule_hor{
+  display: flex;
+  flex-flow: row;
+  align-items: stretch;
+  overflow: hidden;
+  margin-left: 5px;
+}
+
+.canvas_rule_ver{
+  overflow: hidden;
+  margin-top: 5px;
+}
