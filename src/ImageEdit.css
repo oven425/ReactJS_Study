@@ -43,7 +43,37 @@
   margin-left: 5px;
 }
 
+.canvas_rule_hor>div{
+  flex-shrink: 0;
+  width: calc(100px/1.5);
+  background-image: url(svg/rule_hor.svg);
+  font-size: 13px;
+}
+
 .canvas_rule_ver{
   overflow: hidden;
   margin-top: 5px;
 }
+
+.canvas_rule_ver>div{
+  flex-shrink: 0;
+  height: calc(100px/1.5);
+  
+  background-image: url(svg/rule_ver.svg);
+  font-size: 13px;
+}
+
+.canvas_rule_ver>div>div{
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+
+
+
+@media only screen and (-moz-min-device-pixel-ratio: 2), 
+       only screen and (-o-min-device-pixel-ratio: 2/1), 
+       only screen and (-webkit-min-device-pixel-ratio: 2), 
+       only screen and (min-device-pixel-ratio: 2) {
+ /*use CSS to swap out your low res images with high res ones here*/
+}   
