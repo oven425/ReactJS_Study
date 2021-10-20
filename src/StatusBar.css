@@ -1,10 +1,19 @@
+:root {
+    --device_pixelratio :1;
+    }
 .statusbar{
-    border: 1px solid rgb(255,0,0);
-    background-color: rgb(0,255,0);
+    border-top: 1px solid rgb(215,215,215);
+    background-color: rgb(240,240,240);
     display: flex;
 }
 
 .statusbaritem{
-    border: 1px solid rgb(0,0,255);
+    display: flex;
 }
 
+.statusbaritemsplit{
+    width: 1px;
+    height: calc(100% - 1px);
+    background-color: rgb(215,215,215);
+    align-self: center;
+}
