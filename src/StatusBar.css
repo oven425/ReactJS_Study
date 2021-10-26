@@ -1,6 +1,3 @@
-:root {
-    --device_pixelratio :1;
-    }
 .statusbar{
     border-top: 1px solid rgb(215,215,215);
     background-color: rgb(240,240,240);
@@ -9,6 +6,9 @@
 
 .statusbaritem{
     display: flex;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 10px;
 }
 
 .statusbaritemsplit{
@@ -16,4 +16,5 @@
     height: calc(100% - 1px);
     background-color: rgb(215,215,215);
     align-self: center;
+    margin-right: 2px;
 }

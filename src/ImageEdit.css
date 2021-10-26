@@ -1,3 +1,6 @@
+:root {
+  --device_pixelratio :2;
+  }
 .canvasedit {
   display: grid;
   grid-template-columns: auto auto;
@@ -45,7 +48,7 @@
 
 .canvas_rule_hor>div{
   flex-shrink: 0;
-  width: calc(100px/1.5);
+  width: calc(100px / var(--device_pixelratio));
   background-image: url(svg/rule_hor.svg);
   font-size: 13px;
 }
@@ -57,7 +60,7 @@
 
 .canvas_rule_ver>div{
   flex-shrink: 0;
-  height: calc(100px/1.5);
+  height: calc(100px / var(--device_pixelratio));
   
   background-image: url(svg/rule_ver.svg);
   font-size: 13px;
