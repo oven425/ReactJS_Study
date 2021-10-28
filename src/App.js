@@ -14,20 +14,23 @@ import { useEditRect } from './useEditRect'
 import { useWindowSize } from './useWindowSize'
 import ruleshor from './svg/rule_hor.svg'
 import rulesver from './svg/rule_ver.svg'
-import statusbar_pos from './svg/statusbar_pos.svg'
+import './StatusBar.css'
+import {RibbonGroup, RibbonTab,RibbonTabItem} from './RibbonControl/Ribbon';
 
-const StatusBar=()=>{
+export const StatusBar=(props)=>{
+  
   return(
-    <div>
-
+    <div className="statusbar">
+      { props.children }
     </div>
   )
-}
+};
 
-const StatusBarItem=()=>{
+export const StatusBarItem=(props)=>{
   return(
-    <div>
-
+    <div className="statusbaritem">
+      <div className="statusbaritemsplit"></div>
+      { props.children }
     </div>
   )
 }
@@ -35,7 +38,35 @@ const StatusBarItem=()=>{
 function App() {
 
   return(
-    <div>123</div>
+    
+    <div>
+      <RibbonTab>
+        <RibbonTabItem title="Red">
+          <RibbonGroup>
+          <div style={{width:"100px",height:"100px",background:"red"}}></div>
+          </RibbonGroup>
+          
+        </RibbonTabItem>
+        <RibbonTabItem title="Green">
+        <RibbonGroup>
+        <div style={{width:"100px",height:"100px",background:"green"}}></div>
+          </RibbonGroup>
+        
+        </RibbonTabItem>
+        <RibbonTabItem title="Blue">
+        <RibbonGroup>
+        <div style={{width:"100px",height:"100px",background:"blue"}}></div>
+          </RibbonGroup>
+        
+        </RibbonTabItem>
+      </RibbonTab>
+      {/* <StatusBar>
+        <StatusBarItem>AAAA</StatusBarItem>
+        <StatusBarItem>BBBB</StatusBarItem>
+        <StatusBarItem>CCCC</StatusBarItem>
+        <StatusBarItem>DDDD</StatusBarItem>
+      </StatusBar> */}
+    </div>
   )
 
   // const canvas = useRef();
