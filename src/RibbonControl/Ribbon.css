@@ -1,0 +1,22 @@
+.ribbontabitem{
+    display: flex;
+    border-bottom: 1px solid rgb(218,219,220);
+    background-color: rgb(245,246,247);
+}
+
+.ribbongroup{
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: 1fr auto;
+}
+
+.ribbongroup .title{
+    justify-self: center;
+}
+
+/* .ribbongroup:last-child{
+    width: 5px;
+    height: 100%;
+    background-color: orchid;
+} */

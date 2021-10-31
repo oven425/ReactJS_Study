@@ -15,49 +15,66 @@ import { useWindowSize } from './useWindowSize'
 import ruleshor from './svg/rule_hor.svg'
 import rulesver from './svg/rule_ver.svg'
 import './StatusBar.css'
-import {RibbonGroup, RibbonTab,RibbonTabItem} from './RibbonControl/Ribbon';
+import { RibbonGroup, RibbonTab, RibbonTabItem } from './RibbonControl/Ribbon';
 
-export const StatusBar=(props)=>{
-  
-  return(
+export const StatusBar = (props) => {
+
+  return (
     <div className="statusbar">
-      { props.children }
+      {props.children}
     </div>
   )
 };
 
-export const StatusBarItem=(props)=>{
-  return(
+export const StatusBarItem = (props) => {
+  return (
     <div className="statusbaritem">
       <div className="statusbaritemsplit"></div>
-      { props.children }
+      {props.children}
     </div>
   )
 }
 
 function App() {
 
-  return(
-    
+  return (
+
     <div>
       <RibbonTab>
         <RibbonTabItem title="Red">
-          <RibbonGroup>
-          <div style={{width:"100px",height:"100px",background:"red"}}></div>
+          <RibbonGroup title="Clipboard">
+            <div style={{ width: "100px", background: "red" }}>Red</div>
           </RibbonGroup>
-          
+          <RibbonGroup title="Image">
+            <div style={{ width: "100px", height: "100px", background: "green" }}>Red</div>
+          </RibbonGroup>
+          <RibbonGroup title="Tool">
+            <div style={{ width: "100px", height: "100px", background: "blue" }}>Red</div>
+          </RibbonGroup>
         </RibbonTabItem>
         <RibbonTabItem title="Green">
-        <RibbonGroup>
-        <div style={{width:"100px",height:"100px",background:"green"}}></div>
+        <RibbonGroup title="Clipboard">
+            <div style={{ width: "100px", height: "200px", background: "red" }}>Green</div>
           </RibbonGroup>
-        
+          <RibbonGroup title="Image">
+            <div style={{ width: "100px", height: "100px", background: "green" }}>Green</div>
+          </RibbonGroup>
+          <RibbonGroup title="Tool">
+            <div style={{ width: "100px", height: "100px", background: "blue" }}>Green</div>
+          </RibbonGroup>
+
         </RibbonTabItem>
         <RibbonTabItem title="Blue">
-        <RibbonGroup>
-        <div style={{width:"100px",height:"100px",background:"blue"}}></div>
+        <RibbonGroup title="Clipboard">
+            <div style={{ width: "100px", height: "100px", background: "red" }}>Blue</div>
           </RibbonGroup>
-        
+          <RibbonGroup title="Image">
+            <div style={{ width: "100px", height: "100px", background: "green" }}>Blue</div>
+          </RibbonGroup>
+          <RibbonGroup title="Tool">
+            <div style={{ width: "100px", height: "100px", background: "blue" }}>Blue</div>
+          </RibbonGroup>
+
         </RibbonTabItem>
       </RibbonTab>
       {/* <StatusBar>
@@ -326,7 +343,7 @@ function App() {
   //           }
   //           <div style={{ position: "absolute", top: `${mousePos.y + 5}px`, width: `${17 / window.devicePixelRatio}px`, height: `${1 / window.devicePixelRatio}px`, background: "red" }}></div>
   //         </div>
-          
+
   //         <div id="paint" onScroll={(e) => paintScroll(e)} style={{ alignSelf: "stretch", justifySelf:"stretch", position: "relative", marginTop: `${5 / window.devicePixelRatio}px`, marginLeft: `${5 / window.devicePixelRatio}px`, overflow: "auto" }}>
   //           <div style={{ position: "absolute", display: "grid", gridTemplateColumns: "auto auto", gridTemplateRows: "auto auto", justifySelf: "left", alignContent: "start" }}>
   //             <canvas ref={canvas} width={`${canvasSize.width}px`} height={`${canvasSize.height}px`}></canvas>
