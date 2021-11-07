@@ -6,7 +6,6 @@ import { MediaCapture } from './MediaCapture';
 import { useState, useMemo, useEffect } from 'react';
 import { useRef } from 'react';
 import { ImageEdit } from './ImageEdit';
-import { Ribbon } from './Ribbon'
 import { useRect } from './useRect'
 import { useSelectRect } from './useSelectRect'
 import { useResizeRect, ResizeTypes } from "./useResizeRect";
@@ -15,34 +14,55 @@ import { useWindowSize } from './useWindowSize'
 import ruleshor from './svg/rule_hor.svg'
 import rulesver from './svg/rule_ver.svg'
 import './StatusBar.css'
-import { RibbonGroup, RibbonTab, RibbonTabItem } from './RibbonControl/Ribbon';
+import largeicon from './img/64x64.png'
+import smallicion from './img/16x16.png'
+import mediumicon from './img/32x32.png'
+import { Ribbon, RibbonButton, RibbonGroup, RibbonTab, RibbonTabItem } from './RibbonControl/Ribbon';
 
-export const StatusBar = (props) => {
 
-  return (
-    <div className="statusbar">
-      {props.children}
-    </div>
-  )
-};
-
-export const StatusBarItem = (props) => {
-  return (
-    <div className="statusbaritem">
-      <div className="statusbaritemsplit"></div>
-      {props.children}
-    </div>
-  )
-}
 
 function App() {
-
   return (
 
     <div>
-      <RibbonTab>
+      {/* <img src={largecion} alt="123"></img> */}
+      <Ribbon>
+        <RibbonTab lable="Home">
+          <RibbonGroup lable="Clipboard">
+            <RibbonButton largsource={largeicon} smallsource={smallicion} lable="AA"></RibbonButton>
+            {/* <div style={{ width: "100px", background: "red" }}>Red</div>
+          <div style={{ width: "100px", height: "100px", background: "green" }}>Red</div> */}
+          </RibbonGroup>
+          <RibbonGroup lable="Image">
+            <div style={{ width: "100px", background: "red" }}>Red</div>
+            <div style={{ width: "100px", height: "100px", background: "green" }}>Red</div>
+          </RibbonGroup>
+          <RibbonGroup lable="Tools">
+            <div style={{ width: "100px", background: "red" }}>Red</div>
+            <div style={{ width: "100px", height: "100px", background: "green" }}>Red</div>
+          </RibbonGroup>
+          <RibbonGroup lable="Shapes">
+            <div style={{ width: "100px", background: "red" }}>Red</div>
+            <div style={{ width: "100px", height: "100px", background: "green" }}>Red</div>
+          </RibbonGroup>
+          <RibbonGroup lable="Sizes">
+            <div style={{ width: "100px", background: "red" }}>Red</div>
+            <div style={{ width: "100px", height: "100px", background: "green" }}>Red</div>
+          </RibbonGroup>
+          <RibbonGroup lable="Colors">
+            <div style={{ width: "100px", background: "red" }}>Red</div>
+            <div style={{ width: "100px", height: "100px", background: "green" }}>Red</div>
+          </RibbonGroup>
+        </RibbonTab>
+        <RibbonTab lable="View">
+        </RibbonTab>
+      </Ribbon>
+      {/* <RibbonTab>
         <RibbonTabItem title="Red">
           <RibbonGroup title="Clipboard">
+            <RibbonButton lable="Zoom In"></RibbonButton>
+            <RibbonButton lable="Zoom Out"></RibbonButton>
+            <RibbonButton lable="100%"></RibbonButton>
             <div style={{ width: "100px", background: "red" }}>Red</div>
           </RibbonGroup>
           <RibbonGroup title="Image">
@@ -76,7 +96,7 @@ function App() {
           </RibbonGroup>
 
         </RibbonTabItem>
-      </RibbonTab>
+      </RibbonTab> */}
       {/* <StatusBar>
         <StatusBarItem>AAAA</StatusBarItem>
         <StatusBarItem>BBBB</StatusBarItem>

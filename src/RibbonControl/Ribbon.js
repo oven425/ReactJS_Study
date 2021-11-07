@@ -1,76 +1,135 @@
 import { useEffect, useState } from "react"
+import { Children } from "react"
 import './Ribbon.css'
 
-export const RibbonGroup = (props) => {
+export const RibbonButton = (props) => {
+    // console.log("RibbonButton");
+     console.log(props.lable);
+     console.log(props.largsource);
+     console.log(props.smallsource);
+    //console.log(`RibbonButton ${lable}`)
     return (
-        <div className="ribbongroup">
-            <div style={{ marginLeft: "5px" ,marginRight:"5px" }}>
-                {props.children}
-            </div>
-
-            <div style={{ width: "5px", height: "100%", background: "black", justifySelf: "stretch", gridColumnStart: "2", gridRow: "1 / span 2" }}></div>
-            {/* <div style={{justifySelf:"center"}}>{props.title}</div> */}
-            <div className="title">{props.title}</div>
+        <div>
+            <img src={props.smallsource} atl="123"></img>
+            {props.lable}
         </div>
     )
 }
 
-export const RibbonTabItem = (props) => {
-    // console.log(props.children);
-    // useEffect(()=>{
-    //     props.children.map((props,index)=>{
-    //         console.log(props.children);
-    //         return props
-    //     })
-    // },[])
-
+export const RibbonGroup = (props) => {
+    console.log("RibbonGroup");
+    console.log(props);
     return (
-        <div className="ribbontabitem">
-            {
-                props.children.map((props, index) => {
+        <div className="ribbongroup">
+            <div className="content">
+                {/* {props.children} */}
+                {
+                Children.toArray(props.children).map((props, index) => {
                     return (
                         <div key={index}>{props}</div>
                     )
                 })
             }
-            {/* {props.children} */}
+            </div>
+            <div className="splitline"></div>
+            <div className="title">{props.lable}</div>
+        </div>
+    )
+}
+
+export const RibbonTabItem = (props) => {
+    return (
+        <div className="ribbontabitem">
+            {/* {
+                props.children.map((props, index) => {
+                    return (
+                        <div key={index}>{props}</div>
+                    )
+                })
+            } */}
+            {
+                Children.toArray(props.children).map((props, index) => {
+                    return (
+                        <div key={index}>{props}</div>
+                    )
+                })
+            }
         </div>
     )
 }
 
 export const RibbonTab = (props) => {
-    //console.log(props.children)
-    const [tabIndex, setTabIndex] = useState(0);
-    const tabitemchange = (e, index) => {
-        console.log(e);
-        console.log(index);
-        setTabIndex(index);
-    }
+    // //console.log(React.Children.toArray(props.Children));
+    // //const arrayChildren = Children.toArray(props.children);
+
+    // const [tabIndex, setTabIndex] = useState(0);
+    // const tabitemchange = (e, index) => {
+    //     setTabIndex(index);
+    // }
+    // return (
+    //     <div>
+    //         <div>
+    //             <div style={{ display: "flex" }}>
+    //                 {/* {
+    //                     props.children.map((props, index) => {
+    //                         return (
+    //                             <div key={index} onClick={(e) => { tabitemchange(e, index) }}>{props.props.title}</div>
+    //                         )
+    //                     })
+    //                 } */}
+    //                 {
+    //                     Children.toArray(props.children).map((props, index) => {
+    //                         return (
+    //                             <div key={index} onClick={(e) => { tabitemchange(e, index) }}>{props.props.title}</div>
+    //                         )
+    //                     })
+    //                 }
+    //             </div>
+    //         </div>
+    //         <div>
+    //             {
+    //                 Children.toArray(props.children)[tabIndex]
+    //             }
+    //             {/* {props.children[tabIndex]} */}
+    //         </div>
+    //     </div>
+    // )
+
     return (
-        <div>
-            <div>
-                <div style={{ display: "flex" }}>
-                    {
-                        props.children.map((props, index) => {
-                            return (
-                                <div key={index} onClick={(e) => { tabitemchange(e, index) }}>{props.props.title}</div>
-                            )
-                        })
-                    }
-                </div>
-            </div>
-            <div>
-                {props.children[tabIndex]}
-            </div>
+        <div className="ribbontab">
+
+            {
+                Children.toArray(props.children).map((props, index) => {
+                    return (
+                        <div key={index}>{props}</div>
+                    )
+                })
+            }
         </div>
     )
 }
 
 
 export const Ribbon = (props) => {
+    console.log(props)
+    const [tabIndex, setTabIndex] = useState(0);
+    const tabitemchange = (e, index) => {
+        setTabIndex(index);
+    }
     return (
         <div>
-            {props.children}
+            <div style={{display:"flex"}}>
+            {
+                        Children.toArray(props.children).map((props, index) => {
+                            return (
+                                <div key={index} onClick={(e) => { tabitemchange(e, index) }}>{props.props.lable}</div>
+                            )
+                        })
+                    }
+            </div>
+           {
+               Children.toArray(props.children)[tabIndex]
+           }
         </div>
     )
 }
